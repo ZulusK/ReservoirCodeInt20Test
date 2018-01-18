@@ -1,0 +1,45 @@
+{
+  "name": "ReservoirCodeInt20Test",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/server/bin/www",
+    "dev": "nodemon ./src/server/bin/www"
+  },
+  "_moduleAliases": {
+    "@root": "./src/server",
+    "@config": "./src/server/config/index.js",
+    "@routes": "./src/server/routes",
+    "@DBfolder": "./src/server/app/database",
+    "@DB": "./src/server/app/database/driver",
+    "@services": "./src/server/app/services/index",
+    "@utils": "./src/server/app/services/utils"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "busboy": "^0.2.14",
+    "consign": "^0.1.6",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
+    "debug": "~2.6.9",
+    "dotenv": "^4.0.0",
+    "express": "~4.15.5",
+    "jade": "^1.11.0",
+    "module-alias": "^2.0.3",
+    "mongoose": "^4.13.9",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "node_modules/*",
+      "src/client/*",
+      "src/server/views/*",
+      ".gitignore",
+      "LICENSE"
+    ]
+  }
+}
