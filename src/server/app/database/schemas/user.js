@@ -20,7 +20,8 @@ function sha512(password, salt) {
 
 let UserSchema = new Mongoose.Schema({
     username: {type: String, required: true},
-    password: {type: String, default: null},
+    password: {type: String, required: true},
+    role: {type: String, required: true, default: 'user'}
 });
 
 //! pre-save middleware

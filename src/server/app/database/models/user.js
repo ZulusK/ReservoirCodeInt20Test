@@ -2,17 +2,17 @@
 
 const userModel = require('../schemas/user');
 
-const create = function (data, callback) {
+const create = async function (data) {
     const newUser = new userModel(data);
-    newUser.save(callback);
+    return await newUser.save();
 };
 
-const findOne = function (data, callback) {
-    userModel.findOne(data, callback);
+const findOne = async function (data) {
+    return await userModel.findOne(data).exec();
 };
 
-const findById = function (id, callback) {
-    userModel.findById(id, callback);
+const findById = async function (id) {
+    return await userModel.findById(id).exec();
 };
 
 
@@ -29,10 +29,16 @@ const isAuthenticated = function (req, res, next) {
     }
 };
 
+function checkAdmin(req, res, next) {
+    if (req.user.role !== 'admin') return res.redirect('/');
+    next();
+}
+
 module.exports = {
     create,
     findOne,
     findById,
     isAuthenticated,
+    checkAdmin
 
 };
