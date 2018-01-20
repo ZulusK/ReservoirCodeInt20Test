@@ -4,6 +4,7 @@ const config = require('@config');
 function connectDB () {
     const database = mongoose.connection;
     mongoose.Promise = Promise;
+    console.log(config.DB_URL);
     mongoose.connect(config.DB_URL, {
         useMongoClient: true,
         promiseLibrary: global.Promise
