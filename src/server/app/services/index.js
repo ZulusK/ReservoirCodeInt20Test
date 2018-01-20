@@ -11,9 +11,6 @@ function connectDB () {
     database.on('error', error => console.log(`-DB: connection failed: ${error}`));
     database.on('connected', async () => {
         console.log(`+DB: connected to ${config.DB_URL}`)
-        //  const user = require('@DB').user;
-        // // await user.create({username: 'admin', password: 'RollTheBones', role: 'admin'});
-        // console.log(await user.findById('5a63a9d62441f05a2b9fd27f'));
     });
     database.on('disconnected', () => console.log('-DB: disconnected'));
     process.on('SIGINT', () => {
