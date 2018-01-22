@@ -7,19 +7,22 @@ module.exports = {
 module.exports.methods = {
     get: {
         all (model) {
-            return model.getAll().exec();
+            return model.find().exec();
+        },
+        byID (model, id) {
+            return model.findById(id).exec();
+        },
+        byData (model, data) {
+            return model.findOne(data).exec();
         }
     },
     create (model, data) {
         let entity = new model(data);
-        return new Promise((resolve, reject) => {
-            entity.save((err, grid) => {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                else resolve(grid);
-            });
-        });
+        return entity.save();
+    },
+    remove: {
+        byID(model, id) {
+            return model.findByIdAndRemove(id).exec();
+        }
     }
 }

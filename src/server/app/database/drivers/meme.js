@@ -1,56 +1,57 @@
 'use strict';
 
+const DB = require('@DB');
 const Meme = require('@DBschemas/meme');
-const NineGag = require('9gag');
-const Scraper = NineGag.Scraper;
-const NumOfPosts = 50;
-const BD=require('@DB');
 
-async function getNewMemes () {
-    const scraper = new Scraper(NumOfPosts);
-    let added = 0;
+// const NineGag = require('9gag');
+// const Scraper = NineGag.Scraper;
+// const NumOfPosts = 50;
 
-    try {
-        const posts = await scraper.scrap();
+// async function getNewMemes() {
+//     const scraper = new Scraper(NumOfPosts);
+//     let added = 0;
 
-        for (let post of posts) {
-            let data = {
-                title: post.title,
-                content: post.content
-            };
+//     try {
+//         const posts = await scraper.scrap();
 
-            await meme.create(data);
+//         for (let post of posts) {
+//             let data = {
+//                 title: post.title,
+//                 content: post.content
+//             };
 
-            added++;
-        }
+//             await meme.create(data);
 
-        console.log(`Added ${NumOfPosts} memes to DB`);
-    }
-    catch (err) {
-        if (added != 0) console.log(`Added ${added} memes to DB`);
-    }
+//             added++;
+//         }
+
+//         console.log(`Added ${NumOfPosts} memes to DB`);
+//     }
+//     catch (err) {
+//         if (added != 0) console.log(`Added ${added} memes to DB`);
+//     }
+// }
+
+async function create(data) {
+    if (await DB.methods.get.byData(data)) throw new Error('Meme is already exist');
+
+    return await DB.methods.create(Meme, data);
 }
 
-async function create (data) {
-    if (await Meme.findOne(data)) throw new Error('Meme is already exist');
-
-    return BD.create(Meme,data);
+function getById(id) {
+    return DB.methods.get.byID(Meme, id);
 }
 
-async function getById (id) {
-    return await Meme.findById(id).exec();
+function find(params) {
+    return DB.methods.get.byData(params);
 }
 
-async function find (params) {
-    return await Meme.findOne(params).exec();
+function removeById(id) {
+    return DB.methods.remove.byID(Meme, id);
 }
 
-async function removeById (id) {
-    return await Meme.findByIdAndRemove(id).exec();
-}
-
-function getAll () {
-    return  BD.get.all(Meme);
+function getAll() {
+    return DB.get.all(Meme);
 }
 
 module.exports = {
