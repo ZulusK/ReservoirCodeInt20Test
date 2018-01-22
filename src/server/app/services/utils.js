@@ -153,26 +153,6 @@ exports.convert = {
         }
     }
 }
-exports.code = {
-    async loadDefaultBlocks () {
-        if ((await DBBlocks.size()) > 0) return;
-        let categories = JSON.parse(await exports.fs.read(config.BASE_BLOCKS));
-        for (let category of categories) {
-            await DBCategories.create({
-                custom: category.custom,
-                primary: true,
-                name: category.name,
-                color: category.color,
-            })
-            await Promise.all(category.blocks.map(b => {
-                b.primary = true;
-                b.default = true;
-                b.category = category.name;
-                return DBBlocks.create(b)
-            }))
-        }
-    }
-}
 exports.parseJSON = function (str) {
     try {
         return JSON.parse(str);

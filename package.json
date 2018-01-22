@@ -34,6 +34,7 @@
     "jsonwebtoken": "^8.1.1",
     "module-alias": "^2.0.3",
     "mongoose": "^4.13.9",
+    "mongoose-paginate": "^5.0.3",
     "morgan": "~1.9.0",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
