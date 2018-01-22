@@ -1,18 +1,18 @@
 'use strict';
 
-const userModel = require('../schemas/user');
+const DB=require('@DB');
+const User = require('../schemas/user');
 
-const create = async function (data) {
-    const newUser = new userModel(data);
-    return await newUser.save();
+const create =  function (data) {
+    return DB.create(User,data);
 };
 
 const findOne = async function (data) {
-    return await userModel.findOne(data).exec();
+    return await User.findOne(data).exec();
 };
 
 const findById = async function (id) {
-    return await userModel.findById(id).exec();
+    return await User.findById(id).exec();
 };
 
 

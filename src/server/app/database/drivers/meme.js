@@ -34,8 +34,7 @@ async function getNewMemes () {
 async function create (data) {
     if (await Meme.findOne(data)) throw new Error('Meme is already exist');
 
-    const newMeme = new Meme(data);
-    return await newMeme.save();
+    return BD.create(Meme,data);
 }
 
 async function getById (id) {
@@ -50,8 +49,8 @@ async function removeById (id) {
     return await Meme.findByIdAndRemove(id).exec();
 }
 
-async function getAll () {
-    return await BD.getAll(Meme);
+function getAll () {
+    return  BD.get.all(Meme);
 }
 
 module.exports = {

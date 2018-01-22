@@ -5,7 +5,21 @@ module.exports = {
     meme: require('@DBdrivers/meme')
 };
 module.exports.methods = {
-    getAll (model) {
-        return model.getAll().exec();
+    get: {
+        all (model) {
+            return model.getAll().exec();
+        }
+    },
+    create (model, data) {
+        let entity = new model(data);
+        return new Promise((resolve, reject) => {
+            entity.save((err, grid) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                else resolve(grid);
+            });
+        });
     }
 }
