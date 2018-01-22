@@ -14,6 +14,10 @@ const MemeSchema = new Mongoose.Schema({
    rating: {
        type: Number,
        default: 400
+   },
+   added: {
+       type: Date,
+       default: Date.now
    }
 });
 
