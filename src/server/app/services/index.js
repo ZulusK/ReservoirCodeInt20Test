@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('@config');
-const auth=require('@utils/auth');
+const auth=require('@services/auth');
 function connectDB () {
     const database = mongoose.connection;
     mongoose.Promise = Promise;
@@ -23,6 +23,6 @@ function connectDB () {
 
 exports.init = (app) => {
     connectDB();
-    auth();
+    auth(app);
     console.log('+Tools: configured');
 }

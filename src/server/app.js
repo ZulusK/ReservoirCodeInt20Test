@@ -4,7 +4,7 @@ require('module-alias/register');
 require('@config');
 
 // tools
-const services = require('@services');
+const services = require('@services/index');
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');

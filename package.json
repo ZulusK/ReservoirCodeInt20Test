@@ -14,7 +14,7 @@
     "@DBdrivers": "./src/server/app/database/drivers",
     "@DBfolder": "./src/server/app/database",
     "@DB": "./src/server/app/database/driver",
-    "@services": "./src/server/app/services/index",
+    "@services": "./src/server/app/services",
     "@utils": "./src/server/app/services/utils"
   },
   "dependencies": {
