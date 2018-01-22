@@ -10,6 +10,8 @@
     "@root": "./src/server",
     "@config": "./src/server/config/index.js",
     "@routes": "./src/server/routes",
+    "@DBschemas":   "./src/server/app/database/schemas",
+    "@DBdrivers":   "./src/server/app/database/drivers",
     "@DBfolder": "./src/server/app/database",
     "@DB": "./src/server/app/database/driver",
     "@services": "./src/server/app/services/index",
@@ -29,6 +31,9 @@
     "module-alias": "^2.0.3",
     "mongoose": "^4.13.9",
     "morgan": "~1.9.0",
+    "passport": "^0.4.0",
+    "passport-http": "^0.3.0",
+    "passport-http-bearer": "^1.0.1",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {

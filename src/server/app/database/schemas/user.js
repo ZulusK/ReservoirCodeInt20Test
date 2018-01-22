@@ -34,7 +34,7 @@ UserSchema.pre('save', function(next) {
     let user = this;
 
     // only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) return next();
+    if (!user.isModified('password') || user.isNew) return next();
 
     user.password = sha512(user.password, serverSalt).passwordHash;
 
