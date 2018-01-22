@@ -4,7 +4,7 @@ require('module-alias/register');
 require('@config');
 
 // tools
-const services=require('@services');
+const services = require('@services');
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -19,17 +19,16 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 // use middleware
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors);
+app.use(cors());
 
 services.init(app);
-app.use(require('@routes/index'));
-
+require('@routes')(app);
 
 console.log(`+Up on ${process.env.PORT}`);
 module.exports = app;

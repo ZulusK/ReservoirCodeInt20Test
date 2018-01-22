@@ -7,6 +7,7 @@ const DBusers = require('@DB').users;
 let strategies= {
     basic: {
         init(){
+            return;
             passport.use(new BasicStrategy(
                 async function  (login,password,done) {
                     try{
