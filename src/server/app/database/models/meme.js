@@ -14,3 +14,7 @@ async function getById(id) {
 async function removeById(id) {
     return await memeModel.findByIdAndRemove(id).exec();
 }
+
+async function getAll() {
+    return await memeModel.find().exec();
+}
