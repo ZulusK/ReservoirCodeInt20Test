@@ -2,7 +2,7 @@
 
 const Mongoose = require('mongoose');
 const Utils = require('@utils');
-const config=require('@config');
+const config = require('@config');
 //Every user has a username, password, and a picture.
 let User = new Mongoose.Schema({
     username:

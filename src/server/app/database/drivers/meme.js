@@ -33,7 +33,7 @@ const Meme = require('@DBschemas/meme');
 // }
 
 async function create(data) {
-    if (await DB.methods.get.byData(data)) throw new Error('Meme is already exist');
+    if (await DB.methods.get.oneByQuery(data)) throw new Error('Meme is already exist');
 
     return await DB.methods.create(Meme, data);
 }
@@ -43,7 +43,7 @@ function getById(id) {
 }
 
 function find(params) {
-    return DB.methods.get.byData(params);
+    return DB.methods.get.oneByQuery(Meme,params);
 }
 
 function removeById(id) {
@@ -51,7 +51,7 @@ function removeById(id) {
 }
 
 function getAll() {
-    return DB.get.all(Meme);
+    return DB.methods.get.all(Meme);
 }
 
 module.exports = {

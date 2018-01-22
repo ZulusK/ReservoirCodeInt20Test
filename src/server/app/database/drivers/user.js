@@ -7,8 +7,8 @@ const create =  function (data) {
     return DB.create(User,data);
 };
 
-const findOne = async function (data) {
-    return await User.findOne(data).exec();
+const findOne = async function (query) {
+    return DB.find.one(query);
 };
 
 const findById = async function (id) {

@@ -10,10 +10,10 @@ let strategies = {
         init () {
             return;
             passport.use(new BasicStrategy(
-                async function (login, password, done) {
+                async function (username, password, done) {
                     try {
                         //todo
-                        const user = await DBusers.get.byCredentials(login, password);
+                        const user = await DBusers.get.byCredentials(username, password);
                         if (user) {
                             return done(null, user);
                         }

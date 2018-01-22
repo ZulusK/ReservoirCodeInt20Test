@@ -12,13 +12,21 @@ module.exports.methods = {
         byID (model, id) {
             return model.findById(id).exec();
         },
-        byData (model, data) {
-            return model.findOne(data).exec();
+        oneByQuery (model, query) {
+            return model.findOne(query).exec();
         }
     },
     create (model, data) {
         let entity = new model(data);
-        return entity.save();
+        return new Promise((resolve, reject) => {
+            entity.save((err, id) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                else resolve(id);
+            });
+        });
     },
     remove: {
         byID(model, id) {
