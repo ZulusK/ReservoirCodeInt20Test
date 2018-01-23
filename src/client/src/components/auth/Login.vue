@@ -1,5 +1,6 @@
 <template lang="pug">
   b-modal.modal(
+  v-if="isNotLogged",
   :active.sync="UI.isShown",
   scroll="keep",
   animation="zoom-out",
@@ -7,16 +8,14 @@
     div.box.has-text-centered
       figure.avatar
         img.avatar-image(v-if="isInvalidUsername" src="/static/img/user.png", width="140px", alt="")
-        v-gravatar.avatar-image(v-else,:email="$refs.username.text||''",alt="", :size="140",ref="gravatar")
       h3.title.has-text-grey Login
       p.subtitle.has-text-grey Please login to proceed.
       form.has-text-left
-        input-text(label="username", ref="username",placeholder="Your username",rules="'required|email'", icon="account")
-        input-text(label="password", ref="password",placeholder="Your password",rules="'required'", icon="lock", :reveal="true", type="password")
+        input-text(label="username", ref="username",placeholder="Your username",:rules="{required:true}", icon="account", type="text")
+        input-text(label="password", ref="password",placeholder="Your password", :rules="{required:true}",icon="lock", :reveal="true", type="password")
       br
-      a.button.is-block.is-info.is-medium(@click="login()") Login
+      a.button.is-block.is-info.is-medium(@click="loginHandler()") Login
       hr
-      br
       p.has-text-grey.is-size-6
       a(@click="$emit('register'); UI.isShown=false") Sign Up
       span &nbsp;·&nbsp;
@@ -25,30 +24,48 @@
 
 <script>
   import InputText from '%/elements/InputText';
+  import MessageMixin from '@messages-mixin';
+  import AuthMixin from '@auth-mixin';
+
   export default {
+    mixins: [AuthMixin, MessageMixin],
     name: "login",
-    components:{
+    components: {
       InputText
     },
     data () {
       return {
         UI: {
           isShown: false
-        },
-        credentials: {
-          username: null,
-          password: null,
         }
       }
     },
     methods: {
+      isValidCredentials () {
+        return (!this.$refs.username || this.$refs.username.isValid) && (!this.$refs.password || this.$refs.password.isValid);
+      },
       toggle () {
         this.UI.isShown = !this.UI.isShown;
+      },
+      async loginHandler () {
+        if (this.isValidCredentials()) {
+          if (await this.login(this.credentials)) {
+            this.UI.isShown = false;
+          }
+        } else {
+          this.showErrorBox("Looks like, there are some problems with your input");
+        }
       }
     },
     computed: {
       isInvalidUsername () {
-        return !(this.$refs.username && this.$refs.username.text && this.$refs.username.text.length > 0);
+        return !(this.$refs.username && this.$refs.username.data);
+      },
+      credentials () {
+        return {
+          username: this.$refs.username.data,
+          password: this.$refs.password.data
+        }
       }
     }
   }

@@ -12,10 +12,9 @@ let strategies = {
         init () {
             passport.use(new BasicStrategy(
                 async function (username, password, done) {
+                    console.log(username,password)
                     try {
-                        console.log(1)
                         const user = await DBusers.get.byCredentials(username, password);
-                        console.log(2,user)
                         if (user) {
                             return done(null, user);
                         }

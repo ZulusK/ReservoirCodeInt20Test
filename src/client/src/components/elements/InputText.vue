@@ -1,14 +1,15 @@
 <template lang="pug">
   b-field(
-  :type="hasError? 'is-danger': text?'is-success':''",
+  :type="!isValid? 'is-danger': data?'is-success':''",
   :message="errorMessage")
     b-input(
+    @input="$emit('action')",
     :type="type",
     :icon="icon",
     :name="label",
     :placeholder="placeholder",
-    v-model="text",
-    :v-validate="rules",
+    v-model="data",
+    v-validate.initial="rules",
     :password-reveal="reveal")
 </template>
 <script>
@@ -16,21 +17,21 @@
     name: "InputText",
     data () {
       return {
-        text: null
+        data: ""
       }
     },
     methods: {},
     computed: {
       errorMessage () {
-        return this.hasError ? errors.first(this.label) : ''
+        return !this.isValid ? this.errors.first(this.label) : ''
       },
-      hasError () {
-        return this.errors.has(this.label);
+      isValid () {
+        return !this.errors.has(this.label);
       }
     },
     props: {
       "rules": {
-        type: String
+        type: Object
       },
       "icon": {
         type: String
@@ -46,14 +47,11 @@
         type: String,
         default: "text"
       },
-      "reveal":{
-        type:Boolean,
-        default:false
+      "reveal": {
+        type: Boolean,
+        default: false
       }
     },
-    created () {
-
-    }
   }
 </script>
 <style scoped lang="scss">

@@ -11,7 +11,11 @@
   import AppLogin from '%/auth/Login';
   import {EventBus} from "@eventBus";
   import Utils from '@utils';
+  import MessageMixin from '@messages-mixin';
+  import AuthMixin from '@auth-mixin';
+
   export default {
+    mixins: [AuthMixin, MessageMixin],
     name: 'App',
     components: {
       AppHeader,
@@ -20,19 +24,19 @@
     methods: {
       addEventHandlers () {
         EventBus.$on('login', this.$refs.login.toggle);
-        EventBus.$on('logout', Utils.logout);
+        EventBus.$on('logout', this.logout);
       },
       removeEventHandlers () {
         EventBus.$off('login', this.$refs.login.toggle);
-        EventBus.$off('logout', Utils.logout);
+        EventBus.$off('logout', this.logout);
       }
     },
     mounted () {
       this.addEventHandlers();
     },
-    // beforeDestroy () {
-    //   this.removeEventHandlers();
-    // }
+    beforeDestroy () {
+      this.removeEventHandlers();
+    }
   }
 </script>
 
