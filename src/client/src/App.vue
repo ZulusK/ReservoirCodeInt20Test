@@ -1,5 +1,6 @@
 <template lang="pug">
   div#app
+    b-loading(:active="UI.isLoading")
     app-login(ref="login")
     app-register(ref="register")
     app-header
@@ -19,6 +20,11 @@
   export default {
     mixins: [AuthMixin, MessageMixin],
     name: 'App',
+    data(){
+      return{
+
+      }
+    },
     components: {
       AppHeader,
       AppLogin,

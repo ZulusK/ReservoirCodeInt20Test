@@ -8,7 +8,8 @@ module.exports = {
     security: {
         TOKEN_LIFE: {
             access: 60 * 60, //1 hour
-            refresh: 60 * 60 * 24 * 10 //20 days
+            refresh: 60 * 60 * 24 * 10, //20 days,
+            activation:60*60*3, //3 hours
         },
         SERVER_SALT:process.env.SERVER_SALT,
     },

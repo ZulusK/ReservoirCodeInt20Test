@@ -11,9 +11,8 @@ module.exports.get = {
     byID () {
         return DB.methods.get.byID(User, id);
     },
-    async byCredentials (username, password) {
-        let user = await DB.methods.get.oneByQuery(User, {username: username})
-        console.log(password)
+    async byCredentials (email, password) {
+        let user = await DB.methods.get.oneByQuery(User, {email: email})
         if (user && await user.comparePasswords(password)) {
             return user;
         } else {
