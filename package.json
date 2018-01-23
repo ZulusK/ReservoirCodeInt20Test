@@ -15,12 +15,16 @@
     "@DBfolder": "./src/server/app/database",
     "@DB": "./src/server/app/database/driver",
     "@services": "./src/server/app/services",
-    "@utils": "./src/server/app/services/utils"
+    "@collector": "./src/server/app/services/collector",
+    "@utils": "./src/server/app/services/utils",
+    "@APIv1": "./src/server/routes/api/v1",
+    "@errorHandler": "./src/server/app/services/errorHandler"
   },
   "dependencies": {
     "9gag": "^2.0.0",
     "body-parser": "~1.18.2",
     "busboy": "^0.2.14",
+    "busboy-body-parser": "^0.3.1",
     "commonmark": "^0.28.1",
     "consign": "^0.1.6",
     "cookie-parser": "~1.4.3",

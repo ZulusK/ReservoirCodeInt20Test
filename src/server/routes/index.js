@@ -1,12 +1,10 @@
-var express = require('express');
-
+const path = require('path');
 module.exports = (app) => {
-    app.use('/api', require('@routes/api/index'))
+    app.use('/api', require('@routes/api/index'));
     // send root file
-    app.use('*', (req, res, next) => {
+    app.get('*', (req, res, next) => {
         res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
     });
-    //
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
         var err = new Error('Not Found');
@@ -18,7 +16,7 @@ module.exports = (app) => {
         res.locals.message = err.message;
         res.locals.error = req.app.get('env') === 'development' ? err : {};
         res.status(err.status || 500);
-        res.json({
+        return res.json({
             success: false,
             message: err.message || (err.status == 404 ? "Not found" : "Something going wrong"),
             code: err.status || 500

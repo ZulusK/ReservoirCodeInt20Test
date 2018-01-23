@@ -2,18 +2,20 @@ const passport = require('passport');
 const BearerStrategy = require('passport-http-bearer').Strategy;
 const BasicStrategy = require('passport-http').BasicStrategy;
 const config = require('@config');
-const DBusers = require('@DB').users;
+const DBusers = require('@DB').User;
+
+
 const Utils = require('@utils');
 let strategies = {
     // username & password auth
     basic: {
         init () {
-            return;
             passport.use(new BasicStrategy(
                 async function (username, password, done) {
                     try {
-                        //todo
+                        console.log(1)
                         const user = await DBusers.get.byCredentials(username, password);
+                        console.log(2,user)
                         if (user) {
                             return done(null, user);
                         }

@@ -8,6 +8,27 @@ const fileType = require("file-type");
 const commonmark = require('commonmark');
 const ObjectID = require('mongoose').Types.ObjectId;
 
+/**
+ * converts & validates pagination options
+ * @param options options to convert
+ */
+exports.pagination = function (options) {
+    let args = {};
+    if (options.sort) {
+        args.sort = options.sort;
+    }
+    if (options.page && options.page > 0) {
+        args.page = options.page;
+    } else {
+        args.page = 1;
+    }
+    if (options.limit && options.limit >= 0) {
+        args.limit = options.page;
+    } else {
+        args.limit = config.PAGINATION_LIMIT;
+    }
+    return args;
+}
 exports.crypto = {
     /**
      * get hash of string, with this salt
@@ -29,7 +50,7 @@ exports.crypto = {
      * @returns {boolean} is two strings are equals
      */
     compare: (plainData, hash, salt) => {
-        return this.crypto.hash(plainData, salt) === hash;
+        return this.crypto.hash(plainData, salt) == hash;
     },
     /**
      * return random generated string
@@ -88,8 +109,8 @@ exports.errors = {
         }
     }
 }
-exports.sendError = (res, code, msg) => {
-    return res.status(code).json({success: false, message: msg}).end();
+exports.sendError = (res, code, err) => {
+    return res.status(code).json({success: false, message: err.message || err}).end();
 }
 exports.fs = {
     /**
