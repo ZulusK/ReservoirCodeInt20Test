@@ -3,9 +3,9 @@
 const Mongoose = require('mongoose');
 const Utils = require('@utils');
 const config = require('@config');
-//Every user has a username, password, and a picture.
+//Every user has a email, password, and a picture.
 let User = new Mongoose.Schema({
-    username:
+    email:
         {
             type: String,
             required: true
@@ -42,7 +42,7 @@ let User = new Mongoose.Schema({
  * make new index in database by username
  */
 
-User.index({username: 1}, {unique: true});
+User.index({email: 1}, {unique: true});
 User.plugin(require('mongoose-paginate'));
 
 /**
@@ -132,14 +132,6 @@ User.methods.verifyToken = function (name, decode) {
     return decode.secret == this.secrets[name];
 }
 /**
- * check is token is outdated
- * @param name name of token: access or refresh
- * @returns {boolean} true, if outdated
- */
-User.methods.isTokenOutdated = function (name) {
-    return Math.round((Date.now() - this.tokens[name].created) / 1000) > config.security.TOKEN_LIFE[name];
-}
-/**
  * generate new token's secret for user
  * @param name name of token
  */
@@ -150,7 +142,7 @@ User.methods.generateSecret = function (name) {
 User.methods.info = function () {
     return {
         id: this.id,
-        username: this.username,
+        email: this.email,
         role: this.role,
         created: this.created
     }
