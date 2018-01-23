@@ -1,7 +1,7 @@
 let collectors = {
     register (req, res, next) {
         req.args = {
-            username: req.body.username,
+            email: req.body.email,
             password: req.body.password
         }
         console.log(req.args)

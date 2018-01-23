@@ -28,3 +28,8 @@ module.exports.get = {
         else return null;
     },
 }
+module.exports.remove={
+    byID(id){
+        return DB.methods.remove.byID(NAU,id);
+    }
+}

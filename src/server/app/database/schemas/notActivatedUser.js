@@ -58,7 +58,9 @@ NAU.methods.comparePasswords = function (password) {
  * define virtual property, refreshToken, generate token
  */
 NAU.virtual('activationToken')
-    .get(function () {
+    .get( function () {
+        this.generateSecret();
+        this.save().then();
         return Utils.tokens.generate('activation', this.payloadActivation)
     });
 /**
