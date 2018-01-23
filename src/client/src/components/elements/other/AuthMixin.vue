@@ -97,6 +97,22 @@
           this.showErrorBox(err.response.status == 401 ? "Invalid credentials" : err.response.data.message || err.message);
         }
         return false;
+      },
+      async register (credentials) {
+        try {
+          const response = await AuthAPI.register(this.credentials);
+          if (response.data.success) {
+            this.UI.isShown = false;
+            this.$store.dispatch('setToken_access', response.data.tokens.access);
+            this.$store.dispatch('setToken_refresh', response.data.tokens.refresh);
+            this.$store.dispatch('setUser', response.data.user);
+            this.showSuccessBox(`Hello, ${response.data.user.username}`);
+          } else {
+            this.showErrorBox(response.message)
+          }
+        } catch (err) {
+          this.showErrorBox(err.response.status == 401 ? "Invalid credentials" : err.response.data.message || err.message);
+        }
       }
     },
   }
