@@ -5,7 +5,7 @@ const passport = require('passport');
 const collector = require('@collector');
 const errorHandler = require('@errorHandler');
 
-router.post('/register', collector('user.register'), async (req, res, next) =>{
+router.post('/register', collector('user.register'), async (req, res, next) => {
         try {
             let user = await DBusers.create(req.args);
             return res.json(
@@ -32,7 +32,7 @@ router.post('/login', passport.authenticate('basic', {session: false}), async (r
         return errorHandler(res, err);
     }
 });
-router.post('/logout', passport.authenticate(['access-token'], {session: false}), async (req, res, next) => {
+router.post('/logout', passport.authenticate(['basic'], {session: false}), async (req, res, next) => {
     req.user.generateSecret('access');
     req.user.generateSecret('refresh');
     await req.user.save();
