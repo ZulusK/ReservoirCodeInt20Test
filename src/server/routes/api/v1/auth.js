@@ -12,7 +12,8 @@ router.post('/register', collector('user.register'), async (req, res, next) => {
             return res.json(
                 {
                     success: true,
-                    user: user.info()
+                    user: user.info(),
+                    token:user.activationToken
                 });
         } catch (err) {
             return errorHandler(res, err);
@@ -75,11 +76,12 @@ async function activationToken (req, res, next) {
 router.post('/activate/:token', collector('user.activate'), activationToken, async (req, res, next) => {
     // copy user from DBnau to DBuser
     try {
-        req.user = await DBnau.create(req.args);
+        await DBnau.remove.byID(req.user.id);
+        let user = await DBusers.create(Utils.convert.nau2user(req.user));
         return res.json(
             {
                 success: true,
-                user: req.user.info()
+                user: user.info()
             });
     } catch (err) {
         return errorHandler(res, err);
