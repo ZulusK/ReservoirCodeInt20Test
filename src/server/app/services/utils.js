@@ -190,3 +190,36 @@ exports.verifyAdmin = function (req, res, next) {
         next(e);
     }
 }
+
+exports.shuffleArray = function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
+
+exports.calculateNewRating = function(winnerR, loserR){
+    const expectedWinner = 1/(1 + Math.pow(10, (loserR - winnerR) / 400 ));
+    const expectedLoser = 1/(1 + Math.pow(10, (winnerR - loserR) / 400 ));
+
+    //!can be enhanced
+    const coef = rating => rating < 1000 ? 40 : 20;
+
+    const newWinnerR = winnerR + coef(winnerR) * (1  - expectedWinner);
+    const newLoserR = loserR + coef(loserR) * ( -expectedLoser);
+
+    return [newWinnerR, newLoserR];
+
+}
