@@ -4,14 +4,15 @@
       div.container
         div.navbar-brand
           p.navbar-item.brand-text Int20Test
-            a.navbar-burger.burger(data-target="menu", ref="burger", @click="showAllMenu()")
-              span
-              span
-              span
+          a.navbar-burger.burger.round-percent-50(data-target="menu", ref="burger", @click="showAllMenu()")
+            span
+            span
+            span
         div#menu.navbar-menu(ref="menu")
           div.navbar-start
-              header-link(v-for="(link, i) in links", :key="i", :link="link",
-              v-if="!('condition' in link) || link.condition()")
+            header-link(v-for="(link, i) in links", :key="i", :link="link",
+            v-if="!('condition' in link) || link.condition()")
+
 </template>
 
 <script>

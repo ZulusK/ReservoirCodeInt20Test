@@ -7,7 +7,7 @@
       :pack="link.icon.pack||'fa'",
       :icon="link.icon.name",
       :size="link.icon.size||'is-small'")
-      span  {{link.title}}
+      span(:class="link.class")  {{link.title}}
     ui-ripple-ink(trigger="btn").ripple
     ui-tooltip(v-if="hasTooltip",trigger="btn", position="bottom center") {{link.tooltip}}
 </template>

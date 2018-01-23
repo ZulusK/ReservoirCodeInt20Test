@@ -4,6 +4,7 @@ import {EventBus} from '@eventBus';
 let buttons = [];
 buttons.push({
   title: "Home",
+  class:"is-hidden-desktop",
   icon: {
     name: "home",
     pack: "fa"
@@ -13,6 +14,7 @@ buttons.push({
 })
 buttons.push({
   title: "Login",
+  class:"is-hidden-desktop",
   handler: () => {
     EventBus.$emit('login');
   },
@@ -21,6 +23,19 @@ buttons.push({
     pack: "fa"
   },
   tooltip: "Enter to your account",
+  condition: () => $store.getters.isNotLogged()
+})
+buttons.push({
+  title: "register",
+  class:"is-hidden-desktop",
+  handler: () => {
+    EventBus.$emit('register');
+  },
+  icon: {
+    name: "account",
+    pack: "mdi"
+  },
+  tooltip: "Create new account",
   condition: () => $store.getters.isNotLogged()
 })
 buttons.push({

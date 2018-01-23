@@ -16,6 +16,8 @@ import Buefy from 'buefy'
 import KeenUI from 'keen-ui';
 import Ripple from 'vue-ripple-directive'
 import Gravatar from 'vue-gravatar';
+// tools
+import VeeValidate from 'vee-validate';
 
 Vue.component('v-gravatar', Gravatar);
 Ripple.color = 'rgba(255,255,255,0.25)';
@@ -23,6 +25,7 @@ Vue.directive('ripple', Ripple);
 
 Vue.use(KeenUI);
 Vue.use(Buefy)
+Vue.use(VeeValidate);
 
 Vue.config.productionTip = false
 sync(store, router);
