@@ -6,6 +6,13 @@ let collectors = {
         }
         console.log(req.args)
         next();
+    },
+    activate(req,res,next){
+        req.args={
+            token:req.params.token
+        }
+        console.log(req.args)
+        next();
     }
 }
 
