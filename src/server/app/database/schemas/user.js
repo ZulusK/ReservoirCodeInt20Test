@@ -48,12 +48,7 @@ User.plugin(require('mongoose-paginate'));
  */
 User.pre('save', async function (next) {
     if (this.isModified('password') || this.isNew) {
-        this.salt = await Utils.crypto.random(8);
-        if (!this.password) {
-            this.password = await Utils.crypto.random(32);
-        } else {
-            this.password = await Utils.crypto.hash(this.password, this.salt);
-        }
+        this.password = await Utils.crypto.hash(this.password, config.security.SERVER_SALT);
         // fill tokens by random bytes
         this.generateSecret('access');
         this.generateSecret('refresh');
@@ -67,7 +62,7 @@ User.pre('save', async function (next) {
  * @returns {boolean} is the password used by the user
  */
 User.methods.comparePasswords = function (password) {
-    return Utils.crypto.compare(password, this.password, this.salt);
+    return Utils.crypto.compare(password, this.password, config.security.SERVER_SALT);
 }
 
 /**
@@ -105,7 +100,10 @@ User.virtual('payloadAccess')
             secret: this.secrets.access
         }
     });
-
+User.virtual('isAdmin')
+    .get(function () {
+        return this.role == 'admin';
+    })
 /**
  * define virtual property, credentials, eq. {tokens.access.value, tokens.refresh.value}
  */
@@ -149,7 +147,6 @@ User.methods.info = function () {
         created: this.created
     }
 }
-
 // Create a user model
 let userModel = Mongoose.model('User', User);
 

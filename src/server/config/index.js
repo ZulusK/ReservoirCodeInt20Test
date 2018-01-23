@@ -9,6 +9,8 @@ module.exports = {
         TOKEN_LIFE: {
             access: 60 * 60, //1 hour
             refresh: 60 * 60 * 24 * 10 //20 days
-        }
+        },
+        SERVER_SALT:process.env.SERVER_SALT,
     },
+    PAGINATION_LIMIT: process.env.PAGINATION_LIMIT || 25,
 };

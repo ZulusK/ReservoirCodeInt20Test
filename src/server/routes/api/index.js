@@ -1,7 +1,4 @@
 let router = require('express').Router();
 
-router.get('/', (req, res, next) => {
-    console.log(1)
-    res.json({success: true});
-})
+router.use('/v1/auth', require('@APIv1/auth'));
 module.exports = router;
