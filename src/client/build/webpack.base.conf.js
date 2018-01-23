@@ -32,6 +32,7 @@ module.exports = {
       "@utils":resolve('src/services/Utils.js'),
       "@API":resolve('src/services/Utils.js'),
       "@store":resolve('src/store/store.js'),
+      "@eventBus":resolve('src/services/state/EventBus.js')
     }
   },
   module: {

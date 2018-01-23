@@ -4,11 +4,11 @@
       div.container
         div.navbar-brand
           p.navbar-item.brand-text Int20Test
-            div.navbar-burger.burger(data-target="navMenu")
+            a.navbar-burger.burger(data-target="menu", ref="burger", @click="showAllMenu()")
               span
               span
               span
-        div#navMenu.navbar-menu
+        div#menu.navbar-menu(ref="menu")
           div.navbar-start
               header-link(v-for="(link, i) in links", :key="i", :link="link",
               v-if="!('condition' in link) || link.condition()")
@@ -30,6 +30,14 @@
         },
         links
       }
+    },
+    methods: {
+      showAllMenu: function () {
+        let burger = this.$refs.burger;
+        let menu = this.$refs.menu;
+        burger.classList.toggle('is-active');
+        menu.classList.toggle('is-active');
+      },
     }
   }
 </script>

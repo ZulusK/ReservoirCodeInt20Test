@@ -1,4 +1,5 @@
 import $store from '@store';
+import {EventBus} from '@eventBus';
 
 let buttons = [];
 buttons.push({
@@ -12,12 +13,27 @@ buttons.push({
 })
 buttons.push({
   title: "Login",
+  handler: () => {
+    EventBus.$emit('login');
+  },
   icon: {
     name: "sign-in",
     pack: "fa"
   },
   tooltip: "Enter to your account",
   condition: () => $store.getters.isNotLogged()
+})
+buttons.push({
+  title: "Logout",
+  handler: () => {
+    EventBus.$emit('logout');
+  },
+  icon: {
+    name: "sign-out",
+    pack: "fa"
+  },
+  tooltip: "Exit from your account",
+  condition: () => $store.getters.isLogged()
 })
 buttons.push({
   title: "Discover",

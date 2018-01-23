@@ -1,5 +1,5 @@
 <template lang="pug">
-  a(ref="btn").navbar-item
+  a(ref="btn",  @click="hasHandler?link.handler():''").navbar-item
     router-link(:to="link.to||{}").has-text-black
       b-icon(
       :class="link.icon.class",
@@ -30,6 +30,9 @@
       },
       hasIcon () {
         return this.link.icon;
+      },
+      hasHandler () {
+        return this.link.handler;
       }
     }
   }

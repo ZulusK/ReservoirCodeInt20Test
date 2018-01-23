@@ -1,6 +1,6 @@
 <template lang="pug">
   div.navbar-item.has-dropdown.is-hoverable
-    a(ref="btn").navbar-link
+    a(ref="btn", @click="hasHandler?link.handler:''").navbar-link
       router-link(:to="link.to||{}").has-text-black
         b-icon(
         :class="link.icon.class",
@@ -38,6 +38,9 @@
       },
       hasIcon () {
         return this.link.icon;
+      },
+      hasHandler () {
+        return this.link.handler;
       }
     }
   }
