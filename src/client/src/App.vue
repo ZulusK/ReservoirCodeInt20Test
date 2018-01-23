@@ -1,6 +1,7 @@
 <template lang="pug">
   div#app
     app-login(ref="login")
+    app-register(ref="register")
     app-header
     router-view
 
@@ -9,30 +10,38 @@
 <script>
   import AppHeader from '%/elements/Header';
   import AppLogin from '%/auth/Login';
+  import AppRegister from '%/auth/Register';
   import {EventBus} from "@eventBus";
   import Utils from '@utils';
+  import MessageMixin from '@messages-mixin';
+  import AuthMixin from '@auth-mixin';
+
   export default {
+    mixins: [AuthMixin, MessageMixin],
     name: 'App',
     components: {
       AppHeader,
-      AppLogin
+      AppLogin,
+      AppRegister
     },
     methods: {
       addEventHandlers () {
         EventBus.$on('login', this.$refs.login.toggle);
-        EventBus.$on('logout', Utils.logout);
+        EventBus.$on('register', this.$refs.register.toggle);
+        EventBus.$on('logout', this.logout);
       },
       removeEventHandlers () {
         EventBus.$off('login', this.$refs.login.toggle);
-        EventBus.$off('logout', Utils.logout);
+        EventBus.$off('register', this.$refs.register.toggle);
+        EventBus.$off('logout', this.logout);
       }
     },
     mounted () {
       this.addEventHandlers();
     },
-    // beforeDestroy () {
-    //   this.removeEventHandlers();
-    // }
+    beforeDestroy () {
+      this.removeEventHandlers();
+    }
   }
 </script>
 

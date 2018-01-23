@@ -40,6 +40,7 @@ buttons.push({
 })
 buttons.push({
   title: "Logout",
+  class:"is-hidden-desktop",
   handler: () => {
     EventBus.$emit('logout');
   },

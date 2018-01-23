@@ -1,14 +1,13 @@
 <template lang="pug">
   div.navbar-item.has-dropdown.is-hoverable
     a(ref="btn", @click="hasHandler?link.handler:''").navbar-link
-      router-link(:to="link.to||{}").has-text-black
-        b-icon(
-        :class="link.icon.class",
-        v-if="hasIcon",
-        :pack="link.icon.pack||'fa'",
-        :icon="link.icon.name",
-        :size="link.icon.size||'is-small'")
-        span(:class="link.class")  {{link.title}}
+      b-icon(
+      :class="link.icon.class",
+      v-if="hasIcon",
+      :pack="link.icon.pack||'fa'",
+      :icon="link.icon.name",
+      :size="link.icon.size||'is-small'")
+      span(:class="link.class")  {{link.title}}
       ui-ripple-ink(trigger="btn").ripple
       ui-tooltip(v-if="hasTooltip",trigger="btn", position="right middle") {{link.tooltip}}
     div.navbar-dropdown
@@ -27,6 +26,15 @@
       "link": {
         type: Object,
         required: true
+      }
+    },
+    methods: {
+      handleClick () {
+        if (this.hasHandler) {
+          this.link.handler();
+        } else if (this.link.to) {
+          this.$router.push(this.link.to)
+        }
       }
     },
     computed: {

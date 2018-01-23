@@ -8,18 +8,16 @@
     div.box.has-text-centered
       figure.avatar
         img.avatar-image(v-if="isInvalidUsername" src="/static/img/user.png", width="140px", alt="")
-      h3.title.has-text-grey Login
-      p.subtitle.has-text-grey Please login to proceed.
+      h3.title.has-text-grey Sign up
+      p.subtitle.has-text-grey Join us now
       form.has-text-left
         input-text(label="username", ref="username",placeholder="Your username",:rules="{required:true}", icon="account", type="text")
         input-text(label="password", ref="password",placeholder="Your password", :rules="{required:true}",icon="lock", :reveal="true", type="password")
       br
-      a.button.is-block.is-info.is-medium(@click="loginHandler()") Login
+      a.button.is-block.is-info.is-medium(@click="registerHandler()") Send
       hr
-      p.has-text-grey.is-size-6
-      a(@click="$emit('register'); UI.isShown=false") Sign Up
-      span &nbsp;·&nbsp;
-      a(href="#") Forgot Password
+      p.has-text-grey.is-size-6 Are you already registered?
+        a(@click="$emit('register'); UI.isShown=false") Login
 </template>
 
 <script>
@@ -29,7 +27,7 @@
 
   export default {
     mixins: [AuthMixin, MessageMixin],
-    name: "login",
+    name: "register",
     components: {
       InputText
     },
@@ -47,9 +45,9 @@
       toggle () {
         this.UI.isShown = !this.UI.isShown;
       },
-      async loginHandler () {
+      async registerHandler () {
         if (this.isValidCredentials()) {
-          if (await this.login(this.credentials)) {
+          if (await this.register(this.credentials)) {
             this.UI.isShown = false;
           }
         } else {

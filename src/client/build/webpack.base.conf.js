@@ -9,7 +9,6 @@ function resolve (dir) {
 }
 
 
-
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
@@ -27,12 +26,15 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      '#':resolve("src/services"),
-      "%":resolve("src/components"),
-      "@utils":resolve('src/services/Utils.js'),
-      "@API":resolve('src/services/Utils.js'),
-      "@store":resolve('src/store/store.js'),
-      "@eventBus":resolve('src/services/state/EventBus.js')
+      '#': resolve("src/services"),
+      "%": resolve("src/components"),
+      "@utils": resolve('src/services/Utils.js'),
+      "@API": resolve('src/services/Utils.js'),
+      "@store": resolve('src/store/store.js'),
+      "@eventBus": resolve('src/services/state/EventBus.js'),
+      "@messages-mixin": resolve('src/components/elements/other/MessageMixin.vue'),
+      "@auth-mixin": resolve('src/components/elements/other/AuthMixin.vue'),
+      "@config":resolve('src/config.js')
     }
   },
   module: {
