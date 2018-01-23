@@ -1,17 +1,17 @@
 const router = require('express').Router();
 const Utils = require('@utils');
 const DBusers = require("@DB").User;
+const DBnau = require("@DB").NAU;
 const passport = require('passport');
 const collector = require('@collector');
 const errorHandler = require('@errorHandler');
 
 router.post('/register', collector('user.register'), async (req, res, next) => {
         try {
-            let user = await DBusers.create(req.args);
+            let user = await DBnau.create(req.args);
             return res.json(
                 {
                     success: true,
-                    tokens: user.credentials,
                     user: user.info()
                 });
         } catch (err) {
@@ -19,7 +19,6 @@ router.post('/register', collector('user.register'), async (req, res, next) => {
         }
     }
 );
-
 router.post('/login', passport.authenticate('basic', {session: false}), async (req, res, next) => {
     try {
         await req.user.save();
@@ -54,4 +53,36 @@ router.get('/check/access', passport.authenticate(['access-token'], {session: fa
 router.get('/check/refresh', passport.authenticate(['refresh-token'], {session: false}), (req, res, next) => {
     return res.json({success: true});
 })
+
+async function activationToken (req, res, next) {
+    // check, token is valid
+    // and find user
+    try {
+        const decode = Utils.tokens.decode('activation', req.args.token);
+        const me = await DBnau.get.byToken(decode);
+        if (me) {
+            req.user = me;
+            return next();
+        } else {
+            return Utils.sendError(res, 400, "No such user");
+        }
+    } catch (err) {
+        console.log('activation', err)
+        return Utils.sendError(res, 400, err);
+    }
+}
+
+router.post('/activate/:token', collector('user.activate'), activationToken, async (req, res, next) => {
+    // copy user from DBnau to DBuser
+    try {
+        req.user = await DBnau.create(req.args);
+        return res.json(
+            {
+                success: true,
+                user: req.user.info()
+            });
+    } catch (err) {
+        return errorHandler(res, err);
+    }
+});
 module.exports = router;

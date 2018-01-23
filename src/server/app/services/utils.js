@@ -65,6 +65,18 @@ exports.crypto = {
 }
 exports.tokens = {
     algorithm: 'HS256',
+    secret (name) {
+        switch (name) {
+            case 'access':
+                return process.env.ACCESS_TOKENS_SECRET;
+            case 'refresh':
+                return process.env.REFRESH_TOKENS_SECRET;
+            case 'activation':
+                return process.env.ACTIVATION_TOKENS_SECRET;
+            default:
+                throw new Error("Invalid token name")
+        }
+    },
     /**
      * generate new token, with specified name and data
      * @param name on of 'access' or 'refresh'
@@ -74,9 +86,7 @@ exports.tokens = {
     generate (name, data) {
         return jwt.sign(
             data,
-            name == 'access'
-                ? process.env.ACCESS_TOKENS_SECRET
-                : process.env.REFRESH_TOKENS_SECRET,
+            this.secret(name),
             {
                 algorithm: this.algorithm,
                 expiresIn: config.security.TOKEN_LIFE[name]
@@ -92,9 +102,7 @@ exports.tokens = {
     decode (name, token) {
         return jwt.verify(
             token,
-            name == 'access'
-                ? process.env.ACCESS_TOKENS_SECRET
-                : process.env.REFRESH_TOKENS_SECRET,
+            this.secret(name),
             {
                 algorithms: [this.algorithm]
             }
@@ -171,6 +179,12 @@ exports.convert = {
             return new ObjectID.createFromHexString(str);
         } catch (e) {
             return undefined;
+        }
+    },
+    nau2user(nau){
+        return {
+            email:nau.email,
+            password:nau.password
         }
     }
 }
