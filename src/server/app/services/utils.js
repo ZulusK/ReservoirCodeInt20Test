@@ -23,9 +23,9 @@ exports.pagination = function (options) {
         args.page = 1;
     }
     if (options.limit && options.limit >= 0) {
-        args.limit = options.page;
+        args.limit = options.limit;
     } else {
-        args.limit = config.PAGINATION_LIMIT;
+        args.limit = Number.parseInt(config.PAGINATION_LIMIT);
     }
     return args;
 }
