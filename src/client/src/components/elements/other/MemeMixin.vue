@@ -28,7 +28,7 @@
         let result = false;
         try {
           const response = await MemeAPI.deleteById(id);
-          console.log(response.data)
+          // console.log(response.data)
           if (response.data.success) {
             result = true;
             this.showSuccessBox("Mem has been deleted")
@@ -46,7 +46,7 @@
         let result = false;
         try {
           const response = await MemeAPI.load(query);
-          console.log(response.data)
+          // console.log(response.data)
           if (response.data.success) {
             result = response.data;
           } else {
@@ -63,7 +63,7 @@
         let result = false;
         try {
           const response = await MemeAPI.loadOne(id);
-          console.log(response.data)
+          // console.log(response.data)
           if (response.data.success) {
             result = response.data.item;
           } else {
@@ -81,7 +81,7 @@
         let result = false;
         try {
           const response = await MemeAPI.vote({winnerId: winner._id, loserId: loser._id});
-          console.log(response.data)
+          // console.log(response.data)
           if (response.data.success) {
             result = response.data.items;
             this.showSuccessBox("Voted")
@@ -100,7 +100,7 @@
         let result = false;
         try {
           const response = await MemeAPI.random2();
-          console.log(response.data)
+          // console.log(response.data)
           if (response.data.success) {
             result = response.data.items;
           } else {

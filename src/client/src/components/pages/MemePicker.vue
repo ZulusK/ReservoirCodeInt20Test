@@ -59,7 +59,6 @@
       async loadMemeHandle () {
         let result = await this.load2RandomMeme();
         if (result) {
-          console.log(result)
           this.memeLeft = result[0];
           this.memeRight = result[1];
         }

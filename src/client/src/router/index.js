@@ -15,7 +15,7 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index
+      component: MemesView
     },
     {
       path: '/confirm-mail',
@@ -31,11 +31,6 @@ export default new Router({
       path: '/meme/pick',
       name: 'MemePicker',
       component: MemePicker
-    },
-    {
-      path: '/users',
-      name: 'UsersView',
-      component: UsersView
     },
     {
       path: '/memes',

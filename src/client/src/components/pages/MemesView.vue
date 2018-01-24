@@ -93,7 +93,6 @@
       this.removeEventHandlers();
     },
     beforeRouteUpdate (to, from, next) {
-      console.log('update')
       this.handleURLQuery(to.query);
     },
     computed: {},
