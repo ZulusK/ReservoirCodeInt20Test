@@ -9,7 +9,7 @@ const emailVerification = require('@emailVerification');
 const config = require('@config');
 
 function getActivationURL (req) {
-    return req.protocol + '://' + config.VIEW_URL + "/#/activate";
+    return config.VIEW_URL + "/#/activate";
 }
 
 router.post('/register', collector('user.register'), async (req, res, next) => {
