@@ -6,11 +6,13 @@
     @input="$emit('action')",
     :type="type",
     :icon="icon",
+    :value="value",
     :name="label",
     :placeholder="placeholder",
     v-model="data",
     v-validate.initial="rules",
     :password-reveal="reveal")
+
 </template>
 <script>
   export default {
@@ -27,6 +29,11 @@
       },
       isValid () {
         return !this.errors.has(this.label);
+      }
+    },
+    watch:{
+      value(){
+        this.data=this.value;
       }
     },
     props: {
@@ -50,6 +57,10 @@
       "reveal": {
         type: Boolean,
         default: false
+      },
+      "value":{
+        type:String,
+        default:""
       }
     },
   }

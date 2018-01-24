@@ -5,13 +5,14 @@
   scroll="keep",
   animation="zoom-out",
   width="400px")
+    b-loading(:active="UI.isLoading")
     div.box.has-text-centered
       figure.avatar
-        img.avatar-image(v-if="isInvalidUsername" src="/static/img/user.png", width="140px", alt="")
+        img.avatar-image(v-if="isInvalidEmail" src="/static/img/user.png", width="140px", alt="")
       h3.title.has-text-grey Sign up
       p.subtitle.has-text-grey Join us now
       form.has-text-left
-        input-text(label="username", ref="username",placeholder="Your username",:rules="{required:true}", icon="account", type="text")
+        input-text(label="email", ref="email",placeholder="Your email",:rules="{required:true, email:true}", icon="email", type="email")
         input-text(label="password", ref="password",placeholder="Your password", :rules="{required:true}",icon="lock", :reveal="true", type="password")
       br
       a.button.is-block.is-info.is-medium(@click="registerHandler()") Send
@@ -24,6 +25,7 @@
   import InputText from '%/elements/InputText';
   import MessageMixin from '@messages-mixin';
   import AuthMixin from '@auth-mixin';
+  import {EventBus} from "@eventBus";
 
   export default {
     mixins: [AuthMixin, MessageMixin],
@@ -34,13 +36,28 @@
     data () {
       return {
         UI: {
-          isShown: false
+          isShown: false,
+          isLoading: false
         }
       }
     },
     methods: {
+      loadStart () {
+        this.UI.isLoading = true;
+      },
+      loadEnd () {
+        this.UI.isLoading = false;
+      },
+      addEventHandlers () {
+        EventBus.$on('load-register-start', this.loadStart);
+        EventBus.$on('load-register-end', this.loadEnd);
+      },
+      removeEventHandlers () {
+        EventBus.$off('load-register-start', this.loadStart);
+        EventBus.$off('load-register-end', this.loadEnd);
+      },
       isValidCredentials () {
-        return (!this.$refs.username || this.$refs.username.isValid) && (!this.$refs.password || this.$refs.password.isValid);
+        return (!this.$refs.email || this.$refs.email.isValid) && (!this.$refs.password || this.$refs.password.isValid);
       },
       toggle () {
         this.UI.isShown = !this.UI.isShown;
@@ -49,19 +66,26 @@
         if (this.isValidCredentials()) {
           if (await this.register(this.credentials)) {
             this.UI.isShown = false;
+            this.$router.push({name: "ConfirmMail", query: {email: this.credentials.email}});
           }
         } else {
           this.showErrorBox("Looks like, there are some problems with your input");
         }
       }
     },
+    mounted () {
+      this.addEventHandlers();
+    },
+    beforeDestroy () {
+      this.removeEventHandlers();
+    },
     computed: {
-      isInvalidUsername () {
-        return !(this.$refs.username && this.$refs.username.data);
+      isInvalidEmail () {
+        return !(this.$refs.email && this.$refs.email.data);
       },
       credentials () {
         return {
-          username: this.$refs.username.data,
+          email: this.$refs.email.data,
           password: this.$refs.password.data
         }
       }

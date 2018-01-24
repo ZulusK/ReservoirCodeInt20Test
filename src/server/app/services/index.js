@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('@config');
-const auth = require('@services/auth');
+const auth=require('@services/auth');
+const emailVarification = require('@services/emailVarification');
 function connectDB () {
     const database = mongoose.connection;
     mongoose.Promise = Promise;

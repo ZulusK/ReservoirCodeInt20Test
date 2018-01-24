@@ -5,22 +5,25 @@ const DBnau = require("@DB").NAU;
 const passport = require('passport');
 const collector = require('@collector');
 const errorHandler = require('@errorHandler');
+const emailVerification = require('@emailVerification');
 
 router.post('/register', collector('user.register'), async (req, res, next) => {
-        try {
-            let user = await DBnau.create(req.args);
-            return res.json(
-                {
-                    success: true,
-                    user: user.info(),
-                    token:user.activationToken
-                });
-        } catch (err) {
-            return errorHandler(res, err);
-        }
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    try {
+        let user = await DBnau.create(req.args);
+        emailVerification.sendVerification(user.username, user.activationToken, fullUrl);
+        return res.json(
+            {
+                success: true,
+                user: user.info(),
+                token: user.activationToken
+            });
+    } catch (err) {
+        return errorHandler(res, err);
     }
+}
 );
-router.post('/login', passport.authenticate('basic', {session: false}), async (req, res, next) => {
+router.post('/login', passport.authenticate('basic', { session: false }), async (req, res, next) => {
     try {
         await req.user.save();
         res.json({
@@ -32,13 +35,13 @@ router.post('/login', passport.authenticate('basic', {session: false}), async (r
         return errorHandler(res, err);
     }
 });
-router.post('/logout', passport.authenticate(['basic'], {session: false}), async (req, res, next) => {
+router.post('/logout', passport.authenticate(['basic'], { session: false }), async (req, res, next) => {
     req.user.generateSecret('access');
     req.user.generateSecret('refresh');
     await req.user.save();
-    return res.json({success: true});
+    return res.json({ success: true });
 });
-router.get('/token', passport.authenticate('refresh-token', {session: false}), async (req, res, next) => {
+router.get('/token', passport.authenticate('refresh-token', { session: false }), async (req, res, next) => {
     await req.user.save();
     return res.json(
         {
@@ -48,14 +51,14 @@ router.get('/token', passport.authenticate('refresh-token', {session: false}), a
             }
         });
 })
-router.get('/check/access', passport.authenticate(['access-token'], {session: false}), (req, res, next) => {
-    return res.json({success: true});
+router.get('/check/access', passport.authenticate(['access-token'], { session: false }), (req, res, next) => {
+    return res.json({ success: true });
 })
-router.get('/check/refresh', passport.authenticate(['refresh-token'], {session: false}), (req, res, next) => {
-    return res.json({success: true});
+router.get('/check/refresh', passport.authenticate(['refresh-token'], { session: false }), (req, res, next) => {
+    return res.json({ success: true });
 })
 
-async function activationToken (req, res, next) {
+async function activationToken(req, res, next) {
     // check, token is valid
     // and find user
     try {
@@ -72,7 +75,6 @@ async function activationToken (req, res, next) {
         return Utils.sendError(res, 400, err);
     }
 }
-
 router.post('/activate/:token', collector('user.activate'), activationToken, async (req, res, next) => {
     // copy user from DBnau to DBuser
     try {
@@ -87,4 +89,6 @@ router.post('/activate/:token', collector('user.activate'), activationToken, asy
         return errorHandler(res, err);
     }
 });
+
+
 module.exports = router;

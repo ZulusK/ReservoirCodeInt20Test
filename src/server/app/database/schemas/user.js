@@ -31,6 +31,10 @@ let User = new Mongoose.Schema({
         type: String,
         required: true,
         default: 'user'
+    },
+    activated: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -63,6 +67,10 @@ User.pre('save', async function (next) {
  */
 User.methods.comparePasswords = function (password) {
     return Utils.crypto.compare(password, this.password, config.security.SERVER_SALT);
+}
+
+User.methods.isActivated = function () {
+    return this.activated;
 }
 
 /**
