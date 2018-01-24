@@ -1,6 +1,14 @@
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport(`smpts://${process.env.EMAIL}:${process.env.EMAIL_PASSWORD}@smtp.google.com`);
+//const transporter = nodemailer.createTransport(`smpts://${process.env.EMAIL}:${process.env.EMAIL_PASSWORD}@smtp.google.com`);
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: `${process.env.EMAIL_PASSWORD}@smtp.google.com`,
+        pass: `${process.env.EMAIL}`
+    }
+});
 
 module.exports = {
     sendVerification: (email, token, url) => {
