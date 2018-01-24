@@ -1,5 +1,5 @@
-#Meme Picker
-####by Reservoir Code Team
+# Meme Pickeк
+#### by Reservoir Code Team
 
 Test project for Int20h
 
