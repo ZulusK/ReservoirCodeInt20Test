@@ -4,6 +4,10 @@ export default {
   sendActivationCodeAgain (credentials) {
     return API.noAuth().post('/api/v1/auth/activate/send-again', credentials);
   },
+  sendActivationCode(credentials){
+    console.log(credentials)
+    return API.noAuth().post(`/api/v1/auth/activate/${credentials.token}`);
+  },
   check (path, key, value) {
     return API.noAuth().post(`/api/v1/validate/auth/${path}/${key}`, {value: value});
   },
@@ -11,7 +15,7 @@ export default {
     return API.access().post('/api/v1/auth/logout');
   },
   login (credentials) {
-    return API.basic(credentials.username, credentials.password).post('/api/v1/auth/login');
+    return API.basic(credentials.email, credentials.password).post('/api/v1/auth/login');
   },
   register (credentials) {
     return API.noAuth().post('/api/v1/auth/register/', credentials);

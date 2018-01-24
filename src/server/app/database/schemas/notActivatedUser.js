@@ -38,7 +38,7 @@ NAU.plugin(require('mongoose-paginate'));
  */
 NAU.pre('save', async function (next) {
     if (this.isModified('password') || this.isNew) {
-        this.password = await Utils.crypto.hash(this.password, config.security.SERVER_SALT);
+        // this.password = await Utils.crypto.hash(this.password, config.security.SERVER_SALT);
         // fill tokens by random bytes
         this.generateSecret();
     }
@@ -51,7 +51,7 @@ NAU.pre('save', async function (next) {
  * @returns {boolean} is the password used by the user
  */
 NAU.methods.comparePasswords = function (password) {
-    return Utils.crypto.compare(password, this.password, config.security.SERVER_SALT);
+    return password==this.password
 }
 
 /**

@@ -33,7 +33,8 @@
       return {
         email: null,
         UI: {
-          isShown: true
+          isShown: true,
+          isLoading:false
         }
       }
     },

@@ -118,6 +118,24 @@
         EventBus.$emit('load-register-end');
         return result;
       },
+      async sendActivationCode (credentials) {
+        EventBus.$emit('load-activate-start');
+        let result = false;
+        try {
+          const response = await AuthAPI.sendActivationCode(credentials);
+          if (response.data.success) {
+            this.UI.isShown = false;
+            this.showSuccessBox(`Your account was successful activated. You can login now`);
+            result = true;
+          } else {
+            this.showErrorBox(response.message)
+          }
+        } catch (err) {
+          this.showErrorBox(err.response.data.message || err.message);
+        }
+        EventBus.$emit('load-activate-end');
+        return result;
+      },
       async sendActivationCodeAgain (credentials) {
         EventBus.$emit('load-confirm-start');
         let result = false;
@@ -133,7 +151,7 @@
         } catch (err) {
           this.showErrorBox(err.response.status == 401 ? "Invalid credentials" : err.response.data.message || err.message);
         }
-        EventBus.$emit('load-register-end');
+        EventBus.$emit('load-confirm-end');
         return result;
       }
     },

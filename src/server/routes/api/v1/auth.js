@@ -6,9 +6,14 @@ const passport = require('passport');
 const collector = require('@collector');
 const errorHandler = require('@errorHandler');
 const emailVerification = require('@emailVerification');
+const config = require('@config');
+
+function getActivationURL (req) {
+    return req.protocol + '://' + config.VIEW_URL + "/#/activate";
+}
 
 router.post('/register', collector('user.register'), async (req, res, next) => {
-        const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+        const fullUrl = getActivationURL(req);
         try {
             let user = await DBnau.create(req.args);
             let token = user.activationToken;
@@ -24,7 +29,7 @@ router.post('/register', collector('user.register'), async (req, res, next) => {
         }
     }
 );
-router.post('/login', passport.authenticate('basic', {session: false}), async (req, res, next) => {
+router.post('/login', passport.authenticate(['basic'], {session: false}), async (req, res, next) => {
     try {
         await req.user.save();
         res.json({
@@ -87,9 +92,8 @@ router.post('/activate/send-again', collector('user.sendAgain'), async (req, res
             return Utils.sendError(res, 404, "No user with such email found");
         }
         let token = user.activationToken;
-        const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+        const fullUrl = getActivationURL(req);
         emailVerification.sendVerification(user.email, token, fullUrl);
-
         return res.json({
             success: true,
             token: token
@@ -104,11 +108,9 @@ router.post('/activate/:token', collector('user.activate'), activationToken, asy
     try {
         await DBnau.remove.byID(req.user.id);
         let user = await DBusers.create(Utils.convert.nau2user(req.user));
-        return res.json(
-            {
-                success: true,
-                user: user.info()
-            });
+        return res.json({
+            success: true,
+        })
     } catch (err) {
         return errorHandler(res, err);
     }

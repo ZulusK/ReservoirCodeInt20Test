@@ -14,4 +14,5 @@ module.exports = {
         SERVER_SALT:process.env.SERVER_SALT,
     },
     PAGINATION_LIMIT: process.env.PAGINATION_LIMIT || 25,
+    VIEW_URL:(process.env.NODE_ENV == 'dev') ? `localhost:8080` : '',
 };
