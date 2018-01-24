@@ -22,7 +22,9 @@
     name: 'App',
     data(){
       return{
-
+        UI:{
+          isLoading:false
+        }
       }
     },
     components: {
@@ -31,15 +33,25 @@
       AppRegister
     },
     methods: {
+      loadStart(){
+        this.UI.isLoading=true;
+      },
+      loadEnd(){
+        this.UI.isLoading=false;
+      },
       addEventHandlers () {
         EventBus.$on('login', this.$refs.login.toggle);
         EventBus.$on('register', this.$refs.register.toggle);
         EventBus.$on('logout', this.logout);
+        EventBus.$on('load-start', this.loadStart);
+        EventBus.$on('load-end', this.loadEnd);
       },
       removeEventHandlers () {
         EventBus.$off('login', this.$refs.login.toggle);
         EventBus.$off('register', this.$refs.register.toggle);
         EventBus.$off('logout', this.logout);
+        EventBus.$off('load-start', this.loadStart);
+        EventBus.$off('load-end', this.loadEnd);
       }
     },
     mounted () {

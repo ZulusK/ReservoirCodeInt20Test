@@ -72,7 +72,6 @@ async function activationToken (req, res, next) {
         return Utils.sendError(res, 400, err);
     }
 }
-
 router.post('/activate/:token', collector('user.activate'), activationToken, async (req, res, next) => {
     // copy user from DBnau to DBuser
     try {
@@ -87,4 +86,6 @@ router.post('/activate/:token', collector('user.activate'), activationToken, asy
         return errorHandler(res, err);
     }
 });
+
+
 module.exports = router;

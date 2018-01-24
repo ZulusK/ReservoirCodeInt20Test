@@ -1,6 +1,7 @@
 <script>
   import AuthAPI from '#/Auth';
   import MessageMixin from '@messages-mixin';
+  import {EventBus} from "@eventBus";
 
   export default {
     mixins: {
@@ -82,37 +83,41 @@
         return !this.isLogged();
       },
       async login (credentials) {
+        EventBus.$emit('load-login-start');
+        let result = false;
         try {
           const response = await AuthAPI.login(this.credentials);
           if (response.data.success) {
             this.$store.dispatch('setToken_access', response.data.tokens.access);
             this.$store.dispatch('setToken_refresh', response.data.tokens.refresh);
             this.$store.dispatch('setUser', response.data.user);
-            this.showSuccessBox(`Hello, ${response.data.user.username}`);
-            return true;
+            this.showSuccessBox(`Hello, ${response.data.user.email}`);
+            result = true;
           } else {
             this.showErrorBox(response.data.message);
           }
         } catch (err) {
           this.showErrorBox(err.response.status == 401 ? "Invalid credentials" : err.response.data.message || err.message);
         }
-        return false;
+        EventBus.$emit('load-login-end');
+        return result;
       },
       async register (credentials) {
+        EventBus.$emit('load-register-start');
+        let result = false;
         try {
           const response = await AuthAPI.register(this.credentials);
           if (response.data.success) {
             this.UI.isShown = false;
-            this.$store.dispatch('setToken_access', response.data.tokens.access);
-            this.$store.dispatch('setToken_refresh', response.data.tokens.refresh);
-            this.$store.dispatch('setUser', response.data.user);
-            this.showSuccessBox(`Hello, ${response.data.user.username}`);
+            result = true;
           } else {
             this.showErrorBox(response.message)
           }
         } catch (err) {
           this.showErrorBox(err.response.status == 401 ? "Invalid credentials" : err.response.data.message || err.message);
         }
+        EventBus.$emit('load-register-end');
+        return result;
       }
     },
   }
