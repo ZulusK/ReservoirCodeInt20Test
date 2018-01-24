@@ -7,13 +7,23 @@ const passport = require('passport');
 const errorHandler = require('@errorHandler');
 const config = require('@config');
 
+function getSort (query) {
+    switch (query.sort) {
+        case "rating":
+            return {rating: 1}
+        case "date":
+            return {date: 1}
+        default:
+            return {title: 1}
+    }
+}
 
 router.get('/', async (req, res, next) => {
     try {
         let result = await DBmeme.get.byQuery({}, {
             page: Number(req.query.page) || 1,
             limit: Number(req.query.limit) || config.PAGINATION_LIMIT,
-            sort: {}
+            sort: getSort(req.query)
         });
         res.json({
             success: true,
