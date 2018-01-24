@@ -5,7 +5,9 @@
     div.card-image
       figure.image
         img(v-if="isImage", :src="meme.content", alt="Meme's image")
-        video(v-else :src="meme.content", alt="Meme's content")
+        video(v-else, controls)
+          source(:src="meme.content", )
+          | Your browser does not support HTML5 video.
 
 </template>
 
@@ -21,9 +23,9 @@
         required: true
       }
     },
-    computed:{
-      isImage(){
-        return this.meme&& this.meme.content.match(/.+(gif|jpg|jpeg|raw|png)/)
+    computed: {
+      isImage () {
+        return this.meme && this.meme.content.match(/.+(gif|jpg|jpeg|raw|png)/)
       }
     }
   }

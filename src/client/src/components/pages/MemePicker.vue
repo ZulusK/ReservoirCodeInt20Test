@@ -15,18 +15,18 @@
             a.button.is-info.extended.is-outlined(:class="{'is-loading':UI.isLoading}", :disabled="UI.isLoading", @click="loadMemeHandle") Skip
           template(v-if="memeLeft&& memeRight")
             div.column.is-6
-              a.hoverable-card(@click.stop="false?vote(memeLeft):''", :disable="UI.isLoading")
+              a.hoverable-card(@click.stop="vote(memeLeft)", :disable="UI.isLoading")
                 meme-card(ref="meme-left", :meme="memeLeft")
             div.column.is-6
-              a.hoverable-card(@click.stop="false?vote(memeLeft):''",:disable="UI.isLoading")
+              a.hoverable-card(@click.stop="vote(memeLeft)",:disable="UI.isLoading")
                 meme-card(ref="meme-right",:meme="memeRight")
   div.hero(v-else)
     div.hero-body.container
-    div.notification.is-danger
-    h1.is-size-1
-    b-icon(size="is-large",icon="alert-decagram")
-    span Attention
-    p.is-size-4 You need to log in, if you wish to continue
+      div.notification.is-danger
+        h1.is-size-1
+          b-icon(size="is-large",icon="alert-decagram")
+          span Attention
+        p.is-size-4 You need to log in, if you wish to continue
 </template>
 
 <script>

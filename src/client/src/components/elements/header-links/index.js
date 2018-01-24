@@ -4,17 +4,17 @@ import {EventBus} from '@eventBus';
 let buttons = [];
 buttons.push({
   title: "Home",
-  class:"is-hidden-desktop",
+  class: "is-hidden-desktop",
   icon: {
     name: "home",
     pack: "fa"
   },
-  to: {name: "Index"},
+  to: {name: "MemesView"},
   tooltip: "Back to home",
 })
 buttons.push({
   title: "Login",
-  class:"is-hidden-desktop",
+  class: "is-hidden-desktop",
   handler: () => {
     EventBus.$emit('login');
   },
@@ -27,7 +27,7 @@ buttons.push({
 })
 buttons.push({
   title: "Register",
-  class:"is-hidden-desktop",
+  class: "is-hidden-desktop",
   handler: () => {
     EventBus.$emit('register');
   },
@@ -40,7 +40,7 @@ buttons.push({
 })
 buttons.push({
   title: "Logout",
-  class:"is-hidden-desktop",
+  class: "is-hidden-desktop",
   handler: () => {
     EventBus.$emit('logout');
   },
@@ -56,7 +56,7 @@ buttons.push({
   tooltip: "All our memes is for you",
   children: [
     {
-      to:{name:'MemesList', query:{sort:{raiting:1}}},
+      to: {name: 'MemesView', query: {sort: "rating"}},
       title: "Top",
       icon: {
         name: "fire",
@@ -66,7 +66,7 @@ buttons.push({
     },
     {
       title: "New",
-      to:{name:'MemesList', query:{sort:{date:1}}},
+      to: {name: 'MemesView', query: {sort: "date"}},
       icon: {
         name: "timelapse",
         pack: "mdi",
@@ -79,6 +79,12 @@ buttons.push({
   title: "Work",
   condition: () => $store.getters.isLogged(),
   tooltip: "Work hard",
-  to:{name:'MemePicker'}
+  to: {name: 'MemePicker'}
+})
+buttons.push({
+  title: "Users",
+  condition: () => $store.getters.isLogged() && $store.state.user.role == 'admin',
+  tooltip: "Display all registered users",
+  to: {name: 'UsersView'}
 })
 export default buttons;
