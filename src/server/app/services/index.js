@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('@config');
 const auth = require('@services/auth');
-const emailVarification = require('@services/emailVarification');
 
 const NineGag = require('9gag'),
     Scraper = NineGag.Scraper,
