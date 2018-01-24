@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.container(v-if="isLogged")
+  div.container(v-if="isLogged()")
     b-loading(:active="UI.isLoading")
     div.columns.is-tablet
       div.column.is-10-desktop.is-offset-1-desktop
@@ -15,12 +15,18 @@
             a.button.is-info.extended.is-outlined(:class="{'is-loading':UI.isLoading}", :disabled="UI.isLoading", @click="loadMemeHandle") Skip
           template(v-if="memeLeft&& memeRight")
             div.column.is-6
-              a.hoverable-card
+              a.hoverable-card(@click.stop="false?vote(memeLeft):''", :disable="UI.isLoading")
                 meme-card(ref="meme-left", :meme="memeLeft")
             div.column.is-6
-              a.hoverable-card
+              a.hoverable-card(@click.stop="false?vote(memeLeft):''",:disable="UI.isLoading")
                 meme-card(ref="meme-right",:meme="memeRight")
-
+  div.hero(v-else)
+    div.hero-body.container
+    div.notification.is-danger
+    h1.is-size-1
+    b-icon(size="is-large",icon="alert-decagram")
+    span Attention
+    p.is-size-4 You need to log in, if you wish to continue
 </template>
 
 <script>
@@ -46,6 +52,10 @@
       MemeCard
     },
     methods: {
+      async vote (winner) {
+        this.voteForBestMeme(winner, winner == this.memeLeft ? this.memeRight : this.memeLeft);
+        await this.loadMemeHandle();
+      },
       async loadMemeHandle () {
         let result = await this.load2RandomMeme();
         if (result) {
@@ -70,10 +80,10 @@
     },
     mounted () {
       this.addEventHandlers();
+      this.loadMemeHandle();
     },
-    async beforeDestroy () {
+     beforeDestroy () {
       this.removeEventHandlers();
-      await this.loadMemeHandle();
     },
   }
 </script>

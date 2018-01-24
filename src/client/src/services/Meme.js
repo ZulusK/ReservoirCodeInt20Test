@@ -5,6 +5,6 @@ export default {
     return API.access().get('/api/v1/meme/random2');
   },
   vote(data){
-    return API.access().get(`/api/v1/meme/vote/${data.id}`);
+    return API.access().post(`/api/v1/meme/vote`,data);
   }
 }

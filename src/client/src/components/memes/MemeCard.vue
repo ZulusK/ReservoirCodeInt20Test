@@ -4,7 +4,8 @@
       div.card-header-title(v-html= "meme.title")
     div.card-image
       figure.image
-        img(:src="meme.content", alt="Meme's image")
+        img(v-if="isImage", :src="meme.content", alt="Meme's image")
+        video(v-else :src="meme.content", alt="Meme's content")
 
 </template>
 
@@ -18,6 +19,11 @@
       "meme": {
         type: Object,
         required: true
+      }
+    },
+    computed:{
+      isImage(){
+        return this.meme&& this.meme.content.match(/.+(gif|jpg|jpeg|raw|png)/)
       }
     }
   }

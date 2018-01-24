@@ -47,7 +47,7 @@ router.get('/random2', passport.authenticate(['access-token'], {session: false})
 });
 
 
-router.post('/vote', passport.authenticate(['bearer-access'], {session: false}), async (req, res, next) => {
+router.post('/vote', passport.authenticate(['access-token'], {session: false}), async (req, res, next) => {
     try {
         const winner = await DBmeme.getById(req.body.winnerId);
         const loser = await DBmeme.getById(req.body.loserId);

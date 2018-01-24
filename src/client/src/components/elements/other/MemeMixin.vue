@@ -6,16 +6,34 @@
 
   export default {
     mixins: {
-      MessageMixin,AuthMixin
+      MessageMixin, AuthMixin
     },
     name: "MemeMixin",
     data () {
       return {}
     },
     methods: {
+      async voteForBestMeme (winner, loser) {
+        await this.checkTimeOfTokens();
+        if (this.isNotLogged()) return
+        let result = false;
+        try {
+          const response = await MemeAPI.vote({winnerId: winner._id, loserId: loser._id});
+          console.log(response.data)
+          if (response.data.success) {
+            result = response.data.items;
+            this.showSuccessBox("Voted")
+          } else {
+            this.showErrorBox(response.message)
+          }
+        } catch (err) {
+          this.showErrorBox(err.response.data.message || err.message);
+        }
+        return result;
+      },
       async load2RandomMeme () {
         await this.checkTimeOfTokens();
-        if(this.isNotLogged()) return
+        if (this.isNotLogged()) return
         EventBus.$emit('load-meme-random-start');
         let result = false;
         try {
