@@ -1,0 +1,1051 @@
+{
+	"info": {
+		"name": "Int20Test",
+		"_postman_id": "54bff27d-8e79-d891-de23-217215b64128",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"description": "",
+			"item": [
+				{
+					"name": "register",
+					"description": "",
+					"item": [
+						{
+							"name": "auth register [double args]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Register, status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"pm.test(\"Register is failed\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.success===true).to.eql(false);",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "1",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"",
+											"postman.setEnvironmentVariable(\"current_username\",postman.getEnvironmentVariable(\"next_username\"));",
+											"postman.setEnvironmentVariable(\"current_password\",postman.getEnvironmentVariable(\"next_password\"));",
+											"",
+											"postman.setEnvironmentVariable(\"next_username\", \"user\"+Math.floor(Math.random() * 10000));",
+											"postman.setEnvironmentVariable(\"next_password\", \"password\"+Math.floor(Math.random() * 10000));",
+											"",
+											"pm.test(\"Register is success\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.success===true).to.eql(true);",
+											"})",
+											"pm.test(\"Username is equals to username in request\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.user.username==postman.getEnvironmentVariable(\"current_username\")).to.eql(true);",
+											"})",
+											"pm.test(\"Password doesn't exist in response\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"password\" in jsonData.user).to.eql(false);",
+											"})",
+											"",
+											"pm.test(\"Tokens exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Access token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Refresh token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"refresh\" in jsonData.tokens).to.eql(true);",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "{{next_username}}",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{next_password}}",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth register [no args]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Register, status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "1",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password ",
+											"value": "1",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/register [user]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"",
+											"if(pm.response.status==200){",
+											"    var jsonData=pm.response.json();",
+											"postman.setEnvironmentVariable(\"user_access\",jsonData.tokens.access);",
+											"postman.setEnvironmentVariable(\"user_refresh\",jsonData.tokens.refresh);",
+											"",
+											"",
+											"pm.test(\"Register is success\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.success===true).to.eql(true);",
+											"})",
+											"pm.test(\"Username is equals to username in request\",function(){",
+											"    ",
+											"    pm.expect(jsonData.user.username==postman.getEnvironmentVariable(\"current_username\")).to.eql(true);",
+											"})",
+											"pm.test(\"Password doesn't exist in response\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"password\" in jsonData.user).to.eql(false);",
+											"})",
+											"",
+											"pm.test(\"Tokens exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Access token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Refresh token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"refresh\" in jsonData.tokens).to.eql(true);",
+											"})",
+											"}else{",
+											"    ",
+											"pm.test(\"Register, status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"pm.test(\"Register is failed\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.success===true).to.eql(false);",
+											"})",
+											"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "{{user_username}}",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{user_password}}",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/register [admin]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"",
+											"if(pm.response.status==200){",
+											"    var jsonData=pm.response.json();",
+											"    postman.setEnvironmentVariable(\"admin_access\",jsonData.tokens.access);",
+											"    postman.setEnvironmentVariable(\"admin_refresh\",jsonData.tokens.refresh);",
+											"",
+											"",
+											"pm.test(\"Register is success\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.success===true).to.eql(true);",
+											"})",
+											"pm.test(\"Username is equals to username in request\",function(){",
+											"    ",
+											"    pm.expect(jsonData.user.username==postman.getEnvironmentVariable(\"current_username\")).to.eql(true);",
+											"})",
+											"pm.test(\"Password doesn't exist in response\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"password\" in jsonData.user).to.eql(false);",
+											"})",
+											"",
+											"pm.test(\"Tokens exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Access token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Refresh token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"refresh\" in jsonData.tokens).to.eql(true);",
+											"})",
+											"}else{",
+											"    ",
+											"pm.test(\"Register, status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"pm.test(\"Register is failed\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.success===true).to.eql(false);",
+											"})",
+											"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "{{admin_username}}",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{admin_password}}",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "login",
+					"description": "",
+					"item": [
+						{
+							"name": "auth/login ",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"",
+											"pm.test(\"Login is success\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.success===true).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Username is equals to username in request\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(jsonData.user.username==postman.getEnvironmentVariable(\"current_username\")).to.eql(true);",
+											"})",
+											"pm.test(\"Password doesn't exist in response\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"password\" in jsonData.user).to.eql(false);",
+											"})",
+											"",
+											"pm.test(\"Tokens exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Access token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"})",
+											"",
+											"pm.test(\"Refresh token is exist\",function(){",
+											"    var jsonData=pm.response.json();",
+											"    pm.expect(\"refresh\" in jsonData.tokens).to.eql(true);",
+											"})"
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{current_username}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{current_password}}",
+											"type": "string"
+										},
+										{
+											"key": "saveHelperData",
+											"type": "any"
+										},
+										{
+											"key": "showPassword",
+											"value": false,
+											"type": "boolean"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/login [no such user]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"login, status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "0",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "0",
+											"type": "string"
+										},
+										{
+											"key": "saveHelperData",
+											"type": "any"
+										},
+										{
+											"key": "showPassword",
+											"value": false,
+											"type": "boolean"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/login [user]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"    var jsonData=pm.response.json();",
+											"    postman.setEnvironmentVariable(\"user_access\",jsonData.tokens.access);",
+											"    postman.setEnvironmentVariable(\"user_refresh\",jsonData.tokens.refresh);",
+											"    pm.test(\"Login is success\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.success===true).to.eql(true);",
+											"    });",
+											"",
+											"    pm.test(\"Username is equals to username in request\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.user.username==postman.getEnvironmentVariable(\"user_username\")).to.eql(true);",
+											"    });",
+											"    pm.test(\"Password doesn't exist in response\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"password\" in jsonData.user).to.eql(false);",
+											"    });",
+											"    ",
+											"    pm.test(\"Tokens exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Access token is exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"    });",
+											"",
+											"    pm.test(\"Refresh token is exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"refresh\" in jsonData.tokens).to.eql(true);",
+											"    });",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{user_username}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{user_password}}",
+											"type": "string"
+										},
+										{
+											"key": "saveHelperData",
+											"type": "any"
+										},
+										{
+											"key": "showPassword",
+											"value": false,
+											"type": "boolean"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/login [admin]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"    var jsonData=pm.response.json();",
+											"    postman.setEnvironmentVariable(\"admin_access\",jsonData.tokens.access);",
+											"    postman.setEnvironmentVariable(\"admin_refresh\",jsonData.tokens.refresh);",
+											"    pm.test(\"Login is success\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.success===true).to.eql(true);",
+											"    });",
+											"",
+											"    pm.test(\"Username is equals to username in request\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.user.username==postman.getEnvironmentVariable(\"user_username\")).to.eql(true);",
+											"    });",
+											"    pm.test(\"Password doesn't exist in response\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"password\" in jsonData.user).to.eql(false);",
+											"    });",
+											"    ",
+											"    pm.test(\"Tokens exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Access token is exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"    });",
+											"",
+											"    pm.test(\"Refresh token is exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"refresh\" in jsonData.tokens).to.eql(true);",
+											"    });",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{admin_username}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{admin_password}}",
+											"type": "string"
+										},
+										{
+											"key": "saveHelperData",
+											"type": "any"
+										},
+										{
+											"key": "showPassword",
+											"value": false,
+											"type": "boolean"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "tokens",
+					"description": "",
+					"item": [
+						{
+							"name": "auth/token [user]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"    var jsonData=pm.response.json();",
+											"    postman.setEnvironmentVariable(\"user_access\",jsonData.tokens.access);",
+											"    ",
+											"    pm.test(\"Operation  is success\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.success===true).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Tokens exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Access token is exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"    });",
+											"    pm.test(\"Refresh token is not exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"refresh\" in jsonData.tokens).to.eql(false);",
+											"    });"
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user_refresh}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"token"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/token [bad token]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "123",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"token"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/token [admin]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"    var jsonData=pm.response.json();",
+											"    postman.setEnvironmentVariable(\"admin_refresh\",jsonData.tokens.access);",
+											"    ",
+											"    pm.test(\"Operation  is success\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.success===true).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Tokens exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"tokens\" in jsonData).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Access token is exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"access\" in jsonData.tokens).to.eql(true);",
+											"    });",
+											"    pm.test(\"Refresh token is not exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"refresh\" in jsonData.tokens).to.eql(false);",
+											"    });"
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_refresh}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"token"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "logout",
+					"description": "",
+					"item": [
+						{
+							"name": "auth/logout [user]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"    var jsonData=pm.response.json();",
+											"    postman.setEnvironmentVariable(\"user_access\",\"\");",
+											"    postman.setEnvironmentVariable(\"user_refresh\",\"\");",
+											"    ",
+											"    pm.test(\"Operation  is success\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.success===true).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Tokens is not exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"tokens\" in jsonData).to.eql(false);",
+											"    });",
+											"    "
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{user_username}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{user_password}}",
+											"type": "string"
+										},
+										{
+											"key": "saveHelperData",
+											"type": "any"
+										},
+										{
+											"key": "showPassword",
+											"value": false,
+											"type": "boolean"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/logout",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"logout"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "auth/logout [admin]",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"    var jsonData=pm.response.json();",
+											"    postman.setEnvironmentVariable(\"admin_access\",\"\");",
+											"    postman.setEnvironmentVariable(\"admin_refresh\",\"\");",
+											"    ",
+											"    pm.test(\"Operation  is success\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(jsonData.success===true).to.eql(true);",
+											"    });",
+											"    ",
+											"    pm.test(\"Tokens is not exist\",function(){",
+											"        var jsonData=pm.response.json();",
+											"        pm.expect(\"tokens\" in jsonData).to.eql(false);",
+											"    });",
+											"    "
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{admin_username}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{admin_password}}",
+											"type": "string"
+										},
+										{
+											"key": "saveHelperData",
+											"type": "any"
+										},
+										{
+											"key": "showPassword",
+											"value": false,
+											"type": "boolean"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/api/v1/auth/logout",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"logout"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}

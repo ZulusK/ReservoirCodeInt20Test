@@ -3,7 +3,7 @@ module.exports = {
     ROOT_URL: (process.env.NODE_ENV == 'dev') ? `localhost:${this.PORT}` : 'https://meme-picker.herokuapp.com',
     DB_URL: (process.env.NODE_ENV == 'dev') ?
         `mongodb://${process.env.DB_LOGIN_DEV}:${process.env.DB_PSW_DEV}@ds261527.mlab.com:61527/int20test_dev` :
-        `mongodb://${process.env.DB_LOGIN_PROD}:${process.env.DB_SWP_PROD}@ds046677.mlab.com:46677/int20test`,
+        `mongodb://${process.env.DB_LOGIN_PROD}:${process.env.DB_PSW_PROD}@ds046677.mlab.com:46677/int20test`,
     PORT: process.env.PORT || 3000,
     security: {
         TOKEN_LIFE: {
