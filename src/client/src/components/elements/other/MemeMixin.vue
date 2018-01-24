@@ -13,6 +13,23 @@
       return {}
     },
     methods: {
+      async loadMemes (query) {
+        EventBus.$emit('load-memes-start');
+        let result = false;
+        try {
+          const response = await MemeAPI.load(query);
+          console.log(response.data)
+          if (response.data.success) {
+            result = response.data;
+          } else {
+            this.showErrorBox(response.message)
+          }
+        } catch (err) {
+          this.showErrorBox(err.response.data.message || err.message);
+        }
+        EventBus.$emit('load-memes-end');
+        return result;
+      },
       async voteForBestMeme (winner, loser) {
         await this.checkTimeOfTokens();
         if (this.isNotLogged()) return

@@ -18,6 +18,7 @@
         console.log(1)
         //check is refresh token are valid
         if (!await this.isValidRefreshToken()) {
+          console.log('refresh token expired')
           this.logout();
           return;
         }

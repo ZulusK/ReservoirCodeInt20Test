@@ -8,22 +8,23 @@ const errorHandler = require('@errorHandler');
 const config = require('@config');
 
 
-router.get('/top', passport.authenticate(['access-token'], {session: false}), async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
-        res.json(await DBmeme.paginate({},
-            {
-                page: req.query.page,
-                sort: {rating: -1}
-            })
-        );
-        console.log(await DBmeme.paginate({},
-            {
-                page: req.query.page,
-                sort: {rating: -1}
-            }));
-
+        let result = await DBmeme.get.byQuery({}, {
+            page: Number(req.query.page) || 1,
+            limit: Number(req.query.limit) || config.PAGINATION_LIMIT,
+            sort: {}
+        });
+        res.json({
+            success: true,
+            items: result.docs,
+            limit: result.limit,
+            total: result.total,
+            page: result.page
+        })
     } catch (err) {
-        return errorHandler(res, err);
+        console.log(err)
+        return errorHandler(res, 400, err);
     }
 });
 
