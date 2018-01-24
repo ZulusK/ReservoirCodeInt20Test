@@ -29,11 +29,10 @@
         // update access token
         try {
           const response = await AuthAPI.updateAccessToken();
-          console.log(response.data)
           if (response.data.success) {
             this.$store.dispatch('setToken_access', response.data.tokens.access);
           } else {
-              this.logout();
+            this.logout();
           }
         } catch (err) {
           this.logout();

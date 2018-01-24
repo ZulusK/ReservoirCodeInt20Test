@@ -9,7 +9,7 @@ buttons.push({
     name: "home",
     pack: "fa"
   },
-  to: {name: "MemesView"},
+  to: {name: "MemesView", query: {sort: "title"}},
   tooltip: "Back to home",
 })
 buttons.push({

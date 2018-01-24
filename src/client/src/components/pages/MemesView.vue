@@ -7,7 +7,7 @@
     hr
     b-loading(:active="UI.isLoading")
     div.columns.is-multiline
-      div.column.is-3(v-for="meme in memes", :key="meme._id")
+      div.column.is-6-tablet.is-4-desktop.is-3-fullhd(v-for="meme in memes", :key="meme._id")
         meme-card(:meme="meme")
     b-pagination(
     :total="total",
