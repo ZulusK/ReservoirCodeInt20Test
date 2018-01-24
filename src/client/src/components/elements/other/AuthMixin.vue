@@ -108,7 +108,24 @@
         try {
           const response = await AuthAPI.register(this.credentials);
           if (response.data.success) {
+            result = true;
+          } else {
+            this.showErrorBox(response.message)
+          }
+        } catch (err) {
+          this.showErrorBox(err.response.status == 401 ? "Invalid credentials" : err.response.data.message || err.message);
+        }
+        EventBus.$emit('load-register-end');
+        return result;
+      },
+      async sendActivationCodeAgain (credentials) {
+        EventBus.$emit('load-confirm-start');
+        let result = false;
+        try {
+          const response = await AuthAPI.sendActivationCodeAgain(this.credentials);
+          if (response.data.success) {
             this.UI.isShown = false;
+            this.showSuccessBox(`Mail was send again to '${credentials.email}'`);
             result = true;
           } else {
             this.showErrorBox(response.message)

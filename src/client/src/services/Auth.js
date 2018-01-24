@@ -1,10 +1,13 @@
 import API from '#/API';
 
 export default {
+  sendActivationCodeAgain (credentials) {
+    return API.noAuth().post('/api/v1/auth/activate/send-again', credentials);
+  },
   check (path, key, value) {
     return API.noAuth().post(`/api/v1/validate/auth/${path}/${key}`, {value: value});
   },
-  fullLogout(){
+  fullLogout () {
     return API.access().post('/api/v1/auth/logout');
   },
   login (credentials) {
@@ -13,10 +16,10 @@ export default {
   register (credentials) {
     return API.noAuth().post('/api/v1/auth/register/', credentials);
   },
-  checkTokenAccess(){
+  checkTokenAccess () {
     return API.access().get('/api/v1/auth/check/access');
   },
-  checkTokenRefresh(){
+  checkTokenRefresh () {
     return API.refresh().get('/api/v1/auth/check/refresh');
   },
   updateAccessToken () {

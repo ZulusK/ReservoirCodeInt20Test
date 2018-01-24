@@ -1,5 +1,6 @@
 <template lang="pug">
   section.hero.is-info.is-fullheight(v-if="isNotLogged")
+    b-loading(:active="UI.isLoading")
     div.hero-body
       div.container.has-text-centered
         div.column.is-6.is-offset-3.content
@@ -30,27 +31,48 @@
     },
     data () {
       return {
-        email: null
+        email: null,
+        UI: {
+          isShown: true
+        }
       }
     },
     methods: {
+      loadStart () {
+        this.UI.isLoading = true;
+      },
+      loadEnd () {
+        this.UI.isLoading = false;
+      },
+      addEventHandlers () {
+        EventBus.$on('load-confirm-start', this.loadStart);
+        EventBus.$on('load-confirm-end', this.loadEnd);
+      },
+      removeEventHandlers () {
+        EventBus.$off('load-confirm-start', this.loadStart);
+        EventBus.$off('load-confirm-end', this.loadEnd);
+      },
       isValidCredentials () {
         return (!this.$refs.email || this.$refs.email.isValid);
       },
-      async handleSend(){
+      async handleSend () {
         if (this.isValidCredentials()) {
-          if (await this.sendActivationCode(this.credentials)) {
-
-            this.$router.push({name: "ConfirmMail", query: {email: this.credentials.email}});
+          if (await this.sendActivationCodeAgain(this.credentials)) {
           }
         } else {
           this.showErrorBox("Looks like, there are some problems with your input");
         }
       }
     },
-    computed: {},
+    computed: {
+      credentials () {
+        return {
+          email: this.$refs.email.data
+        }
+      }
+    },
     props: [],
-    beforeRouteUpdate(to,from){
+    beforeRouteUpdate (to, from) {
       this.email = to.query.email || "";
       console.log(this.email)
     },

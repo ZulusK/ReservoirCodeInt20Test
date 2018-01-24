@@ -1,7 +1,6 @@
 'use strict';
-
-const DB = require('@DB');
 const NAU = require('@DBschemas/notActivatedUser');
+const DB = require('@DB');
 
 module.exports.create = function (data) {
     return DB.methods.create(NAU, data);
@@ -20,7 +19,7 @@ module.exports.get = {
         }
     },
     byEmail (email) {
-        return DB.methods.oneByQuery(NAU, {email: email});
+        return DB.methods.get.oneByQuery(NAU, {email: email});
     },
     async byToken (token) {
         const user = await DB.methods.get.byID(NAU, token.id);

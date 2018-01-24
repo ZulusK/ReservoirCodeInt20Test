@@ -1,9 +1,5 @@
 'use strict';
 const Utils = require('@utils');
-
-module.exports.User = require('@DBdrivers/user');
-module.exports.Meme = require('@DBdrivers/meme');
-module.exports.NAU = require('@DBdrivers/notActivatedUser');
 module.exports.methods = {
     get: {
         all (model, pagination) {
@@ -61,3 +57,6 @@ module.exports.methods = {
         }
     }
 }
+module.exports.User = require('@DBdrivers/user');
+module.exports.Meme = require('@DBdrivers/meme');
+module.exports.NAU = require('@DBdrivers/notActivatedUser');

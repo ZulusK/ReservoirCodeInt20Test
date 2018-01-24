@@ -7,11 +7,18 @@ let collectors = {
         console.log(req.args)
         next();
     },
-    activate(req,res,next){
-        req.args={
-            token:req.params.token
+    activate (req, res, next) {
+        req.args = {
+            token: req.params.token
         }
         console.log(req.args)
+        next();
+    },
+    sendAgain (req, res, next) {
+        req.args = {
+            email: req.body.email
+        }
+        console.log(req.args);
         next();
     }
 }

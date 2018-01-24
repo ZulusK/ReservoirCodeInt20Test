@@ -20,7 +20,7 @@ module.exports.get = {
         }
     },
     byEmail (email) {
-        return DB.methods.oneByQuery(User, {email: email});
+        return DB.methods.get.oneByQuery(User, {email: email});
     },
     async byToken (name, token) {
         const user = await DB.methods.get.byID(User, token.id);
