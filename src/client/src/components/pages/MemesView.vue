@@ -1,19 +1,26 @@
 <template lang="pug">
   div.container
-    section.hero.is-info.welcome.is-small
+    b-loading(:active="UI.isLoading")
+    section.hero.is-info.welcome.is-small(v-if="isLogged()")
       div.hero-body
         h1.is-size-5 Hello, {{$store.state.user.email}}.
         h2.is-size-6 Here you can view all memes
     hr
-    b-loading(:active="UI.isLoading")
-    div.columns.is-multiline
-      div.column.is-6-tablet.is-4-desktop.is-3-fullhd(v-for="meme in memes", :key="meme._id")
-        meme-card(:meme="meme")
     b-pagination(
     :total="total",
     :current.sync="page",
     order="is-centered",
     :per-page="perPage")
+    br
+    div.columns.is-multiline
+      div.column.is-6-tablet.is-4-desktop.is-3-fullhd(v-for="meme in memes", :key="meme._id")
+        meme-card(:meme="meme", @removed="loadMemesHandle")
+    b-pagination(
+    :total="total",
+    :current.sync="page",
+    order="is-centered",
+    :per-page="perPage")
+    br
 </template>
 <script>
   import MessageMixin from '@messages-mixin';
@@ -38,6 +45,15 @@
       }
     },
     methods: {
+      async remove () {
+        if (!this.$route.params.id) {
+          this.showErrorBox("No id of meme found")
+        } else {
+          if (await this.deleteMeme(this.$route.params.id)) {
+            this.$router.push({name: "MemesView"})
+          }
+        }
+      },
       loadStart () {
         this.UI.isLoading = true;
       },

@@ -18,7 +18,7 @@
               a.hoverable-card(@click.stop="vote(memeLeft)", :disable="UI.isLoading")
                 meme-card(ref="meme-left", :meme="memeLeft")
             div.column.is-6
-              a.hoverable-card(@click.stop="vote(memeLeft)",:disable="UI.isLoading")
+              a.hoverable-card(@click.stop="vote(memeRight)",:disable="UI.isLoading")
                 meme-card(ref="meme-right",:meme="memeRight")
   div.hero(v-else)
     div.hero-body.container
@@ -59,6 +59,7 @@
       async loadMemeHandle () {
         let result = await this.load2RandomMeme();
         if (result) {
+          console.log(result)
           this.memeLeft = result[0];
           this.memeRight = result[1];
         }

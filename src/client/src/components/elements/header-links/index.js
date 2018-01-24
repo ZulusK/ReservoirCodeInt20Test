@@ -81,10 +81,10 @@ buttons.push({
   tooltip: "Work hard",
   to: {name: 'MemePicker'}
 })
-buttons.push({
-  title: "Users",
-  condition: () => $store.getters.isLogged() && $store.state.user.role == 'admin',
-  tooltip: "Display all registered users",
-  to: {name: 'UsersView'}
-})
+// buttons.push({
+//   title: "Users",
+//   condition: () => $store.getters.isLogged() && $store.state.user.role == 'admin',
+//   tooltip: "Display all registered users",
+//   to: {name: 'UsersView'}
+// })
 export default buttons;

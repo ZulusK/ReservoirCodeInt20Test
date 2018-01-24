@@ -6,6 +6,7 @@ import ActivateAccount from '@/components/pages/ActivateAccount';
 import MemePicker from '@/components/pages/MemePicker';
 import UsersView from '@/components/pages/UsersView';
 import MemesView from '@/components/pages/MemesView';
+import MemeInfo from '@/components/pages/MemeInfo';
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/memes',
       name: 'MemesView',
       component: MemesView
+    },
+    {
+      path: '/memes/:id',
+      name: 'MemeInfo',
+      component: MemeInfo
     }
   ]
 })

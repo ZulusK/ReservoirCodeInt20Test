@@ -74,7 +74,7 @@
         return this.$store.getters.isLogged();
       },
       isAdmin () {
-        return this.isLogged() && this.$store.state.user.isAdmin;
+        return this.isLogged() && this.$store.state.user.role=='admin';
       },
       isNotLogged () {
         return !this.isLogged();
