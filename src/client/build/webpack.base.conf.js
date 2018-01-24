@@ -33,6 +33,7 @@ module.exports = {
       "@store": resolve('src/store/store.js'),
       "@eventBus": resolve('src/services/state/EventBus.js'),
       "@messages-mixin": resolve('src/components/elements/other/MessageMixin.vue'),
+      "@meme-mixin":resolve('src/components/elements/other/MemeMixin.vue'),
       "@auth-mixin": resolve('src/components/elements/other/AuthMixin.vue'),
       "@config":resolve('src/config.js')
     }

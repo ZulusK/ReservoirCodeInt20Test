@@ -26,7 +26,7 @@ buttons.push({
   condition: () => $store.getters.isNotLogged()
 })
 buttons.push({
-  title: "register",
+  title: "Register",
   class:"is-hidden-desktop",
   handler: () => {
     EventBus.$emit('register');
@@ -56,6 +56,7 @@ buttons.push({
   tooltip: "All our memes is for you",
   children: [
     {
+      to:{name:'MemesList', query:{sort:{raiting:1}}},
       title: "Top",
       icon: {
         name: "fire",
@@ -65,6 +66,7 @@ buttons.push({
     },
     {
       title: "New",
+      to:{name:'MemesList', query:{sort:{date:1}}},
       icon: {
         name: "timelapse",
         pack: "mdi",
@@ -72,5 +74,11 @@ buttons.push({
       tooltip: "Show new memes",
     },
   ]
+})
+buttons.push({
+  title: "Work",
+  condition: () => $store.getters.isLogged(),
+  tooltip: "Work hard",
+  to:{name:'MemePicker'}
 })
 export default buttons;
