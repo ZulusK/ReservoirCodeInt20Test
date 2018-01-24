@@ -116,4 +116,13 @@ router.post('/activate/:token', collector('user.activate'), activationToken, asy
     }
 });
 
+router.post('/changePassword', passport.authenticate(['access-token'], {session: false}), (req, res, next) => {
+    let newPassword = req.user.generateNewPassword();
+    const fullUrl = getActivationURL(req);
+    emailVerification.sendNewPassword(req.user.email, newPassword, fullUrl);
+    return res.json({
+        success: true,
+    })
+});
+
 module.exports = router;

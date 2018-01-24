@@ -147,6 +147,15 @@ User.methods.info = function () {
         created: this.created
     }
 }
+
+User.methods.generateNewPassword = async function () {
+    let newPassword = Utils.crypto.random(32);
+    this.password = newPassword;
+
+    await this.save();
+
+    return newPassword;
+}
 // Create a user model
 let userModel = Mongoose.model('User', User);
 

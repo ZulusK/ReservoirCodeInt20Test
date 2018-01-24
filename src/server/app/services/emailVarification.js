@@ -22,5 +22,14 @@ module.exports = {
             html: `<a href="${url}/${token}">Click to confirm your email</a>`
         };
         transporter.sendMail(mail, (err, info) => console.log(err));
+    },
+    sendNewPassword: (email, password, url) => {
+        let mail = {
+            from: "Meme comparator",
+            to: email,
+            subject: "New password",
+            text: `Your new password: ${password}`
+        };
+        transporter.sendMail(mail, (err, info) => console.log(err));
     }
 }
