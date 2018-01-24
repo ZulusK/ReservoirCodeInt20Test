@@ -5,20 +5,23 @@ const meme = require('@DB').Meme;
 const Utils = require('@utils');
 const passport = require('passport');
 const errorHandler = require('@errorHandler');
-//const collector = require('@collector');
+const config = require('@config');
 
-// router.get('/', async(req, res, next)=> {
-//     console.log('started');
-//     res.message('HELLO WORLD');
-// });
 
 router.get('/top',  passport.authenticate(['basic'], {session: false}), async (req, res, next) => {
-        // console.log('started');
-        console.log( await meme.getAll());
         try {
-            res.json((await meme.getAll()).sort((a, b) => {
-                return b.rating - a.rating;
+            res.json(await meme.paginate({},
+                {
+                    page: req.query.page ,
+                    sort:{rating: -1}
+                })
+            );
+        console.log(await meme.paginate({},
+            {
+                page: req.query.page ,
+                sort:{rating: -1}
             }));
+
         } catch (err) {
             return errorHandler(res, err);
         }

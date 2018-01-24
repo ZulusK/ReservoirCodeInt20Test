@@ -1,6 +1,7 @@
 'use strict';
 
 const Mongoose 	= require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
 const MemeSchema = new Mongoose.Schema({
    title: {
@@ -17,10 +18,12 @@ const MemeSchema = new Mongoose.Schema({
    }
 });
 
+MemeSchema.plugin(mongoosePaginate);
+
 MemeSchema.methods.updateRating = async function (newRating) {
     this.rating = newRating;
     return await this.save();
-}
+};
 
 let memeModel = Mongoose.model('memes', MemeSchema);
 

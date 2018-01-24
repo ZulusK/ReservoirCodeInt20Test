@@ -54,10 +54,15 @@ function getAll() {
     return DB.methods.get.all(Meme);
 }
 
+function paginate(query, pagination){
+    return DB.methods.get.byQuery(Meme, query, pagination);
+}
+
 module.exports = {
     create,
     getById,
     find,
     removeById,
-    getAll
+    getAll,
+    paginate
 }
