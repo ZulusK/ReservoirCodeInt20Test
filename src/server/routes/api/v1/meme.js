@@ -12,7 +12,7 @@ function getSort (query) {
         case "rating":
             return {rating: -1}
         case "date":
-            return {date: -1}
+            return {date: 1}
         default:
             return {title: -1}
     }
