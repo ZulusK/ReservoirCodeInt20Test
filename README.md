@@ -1,4 +1,4 @@
-# Meme Pickeк
+# Meme Picker
 #### by Reservoir Code Team
 
 Test project for Int20h
