@@ -43,8 +43,8 @@ function connectDB() {
     database.on('error', error => console.log(`-DB: connection failed: ${error}`));
     database.on('connected', async () => {
         console.log(`+DB: connected to ${config.DB_URL}`);
-        addNewMemesToDB();
-        setInterval(() => { addNewMemesToDB() }, 2 * 1000 * 60 * 60);
+        // addNewMemesToDB();
+        // setInterval(() => { addNewMemesToDB() }, 2 * 1000 * 60 * 60);
     });
     database.on('disconnected', () => console.log('-DB: disconnected'));
     process.on('SIGINT', () => {
